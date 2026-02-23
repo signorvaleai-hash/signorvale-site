@@ -1,0 +1,109 @@
+{
+  "lastDeployment": "Just now",
+  "categories": [
+    {
+      "title": "Artificial Intelligence",
+      "products": [
+        {
+          "name": "Agent Marketplace",
+          "url": "#",
+          "cta": "Browse →",
+          "description": "Amazon-style directory for AI agents. 100+ functional utilities from voice generation to data scraping. Each agent manually tested before listing. No vaporware, no API keys required to browse.",
+          "tags": ["Discovery", "Curated", "Live"]
+        },
+        {
+          "name": "Digital Marketer Agent",
+          "url": "#",
+          "cta": "Deploy →",
+          "description": "Autonomous organic growth system for bootstrapped products. Handles content distribution, channel strategy, and community building with zero paid ad spend. Built for makers who hate marketing.",
+          "tags": ["Automation", "Growth", "Zero-Paid"]
+        },
+        {
+          "name": "Auto-Task Distributor",
+          "url": "#",
+          "cta": "Assign →",
+          "description": "Converts investor pitch decks into departmental task lists with intelligent workload allocation. Smart assignment algorithms match tasks to team capacity and skill sets automatically.",
+          "tags": ["Operations", "AI", "Founder Tools"]
+        },
+        {
+          "name": "Video Creation Studio",
+          "url": "#",
+          "cta": "Render →",
+          "description": "Single-prompt video pipeline generating 3-5 minute polished content. Integrates Seedance 2 and neural voice synthesis for automated YouTube series production without editing software.",
+          "tags": ["Video", "Generative", "Content"]
+        }
+      ]
+    },
+    {
+      "title": "Interactive Experiences",
+      "products": [
+        {
+          "name": "Orbit Jump",
+          "url": "#",
+          "cta": "Play →",
+          "description": "One-thumb asteroid survival with orbital mechanics. Hold to spiral inward toward a planet's core, release to slingshot outward. Physics-based one-more-try engine designed for mobile dead time.",
+          "tags": ["Game", "Mobile-First", "Physics"]
+        },
+        {
+          "name": "Cat Sidewalker",
+          "url": "#",
+          "cta": "Simulate →",
+          "description": "Infinite side-scrolling feline simulation. Realistic cat movement patterns across procedurally generated environments. HTML5 canvas with parallax backgrounds. Strangely meditative experience.",
+          "tags": ["Simulation", "Canvas", "Zen"]
+        },
+        {
+          "name": "Gen-Z Astrologer",
+          "url": "#",
+          "cta": "Read →",
+          "description": "Modern astrology platform stripped of mystic woo-woo. Data-driven daily insights with actionable advice rather than vague predictions. Clean brutalist UX for the skeptical but curious.",
+          "tags": ["Content", "Daily", "Modern"]
+        }
+      ]
+    },
+    {
+      "title": "Enterprise Infrastructure",
+      "products": [
+        {
+          "name": "Company OS",
+          "url": "#",
+          "cta": "Install →",
+          "description": "All-in-one operating system replacing Slack + DarwinBox + SAP for SMBs. Task distribution, HR, and investor projections in one cohesive workspace. Designed for total company adoption, not just HR departments.",
+          "tags": ["B2B", "All-in-One", "Operations"]
+        },
+        {
+          "name": "Apollo Link Validator",
+          "url": "#",
+          "cta": "Audit →",
+          "description": "Pharmaceutical inventory crawler validating 10,000+ product URLs across Apollo Pharmacy's catalog. Detects dead links, redirect chains, and 404s before customers encounter them. Automated reconciliation for e-commerce operations at scale.",
+          "tags": ["B2B", "Healthcare", "Automation"]
+        },
+        {
+          "name": "Paper Trade OS",
+          "url": "#",
+          "cta": "Trade →",
+          "description": "Zero-risk trading simulator with real-time P&L, portfolio management, and built-in market education. Every transaction teaches financial mechanics. Holdings dashboard with volatility warnings and performance analytics for beginners.",
+          "tags": ["FinTech", "Education", "Live Data"]
+        }
+      ]
+    },
+    {
+      "title": "Creator Economy",
+      "products": [
+        {
+          "name": "Ebook Formatting Portal",
+          "url": "#",
+          "cta": "Format →",
+          "description": "Drag-and-drop manuscript converter outputting Amazon KDP-compliant files. Handles cover safe-zones, typography standards, and auto-generated tables of contents. Built for high-volume publishing houses and independent authors.",
+          "tags": ["Publishing", "SaaS", "Production"]
+        },
+        {
+          "name": "Idea-to-Website Builder",
+          "url": "#",
+          "cta": "Launch →",
+          "description": "Minimalist idea launcher converting sketches into live subdomains instantly. No-code deployment with automatic SSL, responsive frameworks, and instant sharing. Ideas become living URLs in seconds.",
+          "tags": ["No-Code", "Hosting", "Fast-Deploy"]
+        }
+      ]
+    }
+  ]
+}
