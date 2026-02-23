@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: signorvale-site
+    runtime: static
+    repo: https://github.com/signorvaleai-hash/signorvale-site
+    branch: main
+    buildCommand: "echo 'No build step required'"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
