@@ -935,9 +935,17 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      if (method === "GET") {
+      if (method === "GET" || method === "HEAD") {
         if (isAuthenticated(req)) {
           redirect(res, ADMIN_PATH);
+          return;
+        }
+        if (method === "HEAD") {
+          send(res, 200, "", {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "no-store",
+            ...getSecurityHeaders(),
+          });
           return;
         }
         send(res, 200, renderAdminLoginPage(), {
@@ -991,6 +999,19 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
+      if (method === "HEAD") {
+        send(res, 200, "", {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          ...getSecurityHeaders(),
+        });
+        return;
+      }
+      if (method !== "GET") {
+        sendJson(res, 405, { error: "Method not allowed" }, getSecurityHeaders());
+        return;
+      }
+
       send(res, 200, renderAdminDashboardPage(), {
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "no-store",
@@ -1025,6 +1046,14 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (pathname.startsWith(ADMIN_PATH) || pathname === "/admin.html") {
+      sendJson(res, 404, { error: "Not found" }, getSecurityHeaders());
+      return;
+    }
+
+    if (
+      ADMIN_PATH !== "/admin" &&
+      (pathname === "/admin" || pathname === "/admin/" || pathname.startsWith("/admin/"))
+    ) {
       sendJson(res, 404, { error: "Not found" }, getSecurityHeaders());
       return;
     }
