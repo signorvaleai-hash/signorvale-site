@@ -30,6 +30,7 @@ const MIME_TYPES = {
   ".png": "image/png",
   ".svg": "image/svg+xml",
   ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
 };
 
 const TRACKABLE_EVENTS = new Set(["page_view", "product_click", "play_start", "score_submit", "custom"]);
@@ -844,24 +845,6 @@ function serveStatic(req, res, pathname) {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      if (pathname !== "/" && pathname !== "/index.html") {
-        fs.readFile(path.join(ROOT, "index.html"), (indexErr, indexData) => {
-          if (indexErr) {
-            send(res, 404, "Not found", {
-              "Content-Type": "text/plain; charset=utf-8",
-              ...getSecurityHeaders(),
-            });
-            return;
-          }
-          send(res, 200, indexData, {
-            "Content-Type": "text/html; charset=utf-8",
-            "Cache-Control": "no-store",
-            ...getSecurityHeaders(),
-          });
-        });
-        return;
-      }
-
       send(res, 404, "Not found", {
         "Content-Type": "text/plain; charset=utf-8",
         ...getSecurityHeaders(),

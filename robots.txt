@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/admin/
+Disallow: /api/track
+Disallow: /admin
+
+Sitemap: https://signorvale.com/sitemap.xml

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Signor Vale - AI Product Studio</title>
+  <desc id="desc">Independent product studio portfolio for AI and software systems.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="55%" stop-color="#131d2f"/>
+      <stop offset="100%" stop-color="#20283a"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2fd8c0"/>
+      <stop offset="100%" stop-color="#5db8ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1020" cy="120" r="220" fill="#2fd8c0" opacity="0.12"/>
+  <circle cx="160" cy="540" r="180" fill="#5db8ff" opacity="0.14"/>
+  <rect x="80" y="84" width="1040" height="462" rx="28" fill="#0b1323" stroke="#2b3b56"/>
+  <rect x="80" y="84" width="1040" height="6" fill="url(#line)"/>
+  <text x="130" y="220" fill="#e8f2ff" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="74" font-weight="700">
+    Signor Vale
+  </text>
+  <text x="130" y="300" fill="#9db2cf" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="34">
+    AI Product Studio &amp; Developer Portfolio
+  </text>
+  <text x="130" y="400" fill="#b8cbe4" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="27">
+    Building automation systems, software platforms,
+  </text>
+  <text x="130" y="442" fill="#b8cbe4" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="27">
+    and production-grade products for tech companies.
+  </text>
+  <text x="130" y="512" fill="#2fd8c0" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="24" font-weight="700">
+    signorvale.com
+  </text>
+</svg>
