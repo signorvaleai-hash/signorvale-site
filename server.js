@@ -408,16 +408,62 @@ function aggregateAnalytics(events) {
   };
 }
 
-function resolvePublicPath(urlPath) {
-  const decoded = decodeURIComponent(urlPath.split("?")[0]);
-  const requested = decoded === "/" ? "/index.html" : decoded;
-  const fullPath = path.normalize(path.join(ROOT, requested));
-  if (!fullPath.startsWith(ROOT)) return null;
+function getBlockedRoots() {
+  return [path.join(ROOT, ".git"), path.join(ROOT, ".data")];
+}
 
-  const blockedRoots = [path.join(ROOT, ".git"), path.join(ROOT, ".data")];
-  if (blockedRoots.some((prefix) => fullPath.startsWith(prefix))) return null;
+function isPathAllowed(fullPath) {
+  if (!fullPath.startsWith(ROOT)) return false;
+  const blockedRoots = getBlockedRoots();
+  if (blockedRoots.some((prefix) => fullPath.startsWith(prefix))) return false;
+  return true;
+}
 
-  return fullPath;
+function buildPublicFileCandidates(urlPath) {
+  const decoded = decodeURIComponent((urlPath || "/").split("?")[0]);
+  const cleanPath = decoded === "" ? "/" : decoded;
+  const basePath = path.normalize(path.join(ROOT, cleanPath));
+  if (!isPathAllowed(basePath)) return null;
+
+  const candidates = [];
+
+  if (cleanPath === "/" || cleanPath === "") {
+    candidates.push(path.join(ROOT, "index.html"));
+  } else {
+    candidates.push(basePath);
+
+    if (!path.extname(basePath)) {
+      candidates.push(`${basePath}.html`);
+      candidates.push(path.join(basePath, "index.html"));
+    } else if (cleanPath.endsWith("/")) {
+      candidates.push(path.join(basePath, "index.html"));
+    }
+  }
+
+  const deduped = [];
+  const seen = new Set();
+  for (const filePath of candidates) {
+    if (!isPathAllowed(filePath)) continue;
+    if (seen.has(filePath)) continue;
+    deduped.push(filePath);
+    seen.add(filePath);
+  }
+  return deduped;
+}
+
+function resolvePublicFile(urlPath) {
+  const candidates = buildPublicFileCandidates(urlPath);
+  if (!candidates) return null;
+
+  for (const candidate of candidates) {
+    try {
+      const stat = fs.statSync(candidate);
+      if (stat.isFile()) return candidate;
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 function getSecurityHeaders() {
@@ -834,9 +880,9 @@ function buildTrackEvent(req, payload, reqUrl) {
 }
 
 function serveStatic(req, res, pathname) {
-  const filePath = resolvePublicPath(pathname);
+  const filePath = resolvePublicFile(pathname);
   if (!filePath) {
-    send(res, 400, "Bad request", {
+    send(res, 404, "Not found", {
       "Content-Type": "text/plain; charset=utf-8",
       ...getSecurityHeaders(),
     });
