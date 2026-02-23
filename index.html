@@ -373,6 +373,8 @@
     <script>
         const portfolioRoot = document.getElementById("portfolio-sections");
         const shipStatusText = document.querySelector(".ship-status span:last-child");
+        const ANALYTICS_ENDPOINT = "/api/track";
+        const ANON_ID_KEY = "sv_anon_id";
 
         function escapeHtml(value) {
             return String(value)
@@ -387,6 +389,80 @@
             return String(value).padStart(2, "0");
         }
 
+        function normalizeUrl(rawUrl) {
+            const value = String(rawUrl || "#").trim();
+            if (value === "#") return "#";
+            if (value.startsWith("/") || value.startsWith("https://") || value.startsWith("http://") || value.startsWith("mailto:")) {
+                return value;
+            }
+            return "#";
+        }
+
+        function getAnonId() {
+            let existing = localStorage.getItem(ANON_ID_KEY);
+            if (existing) return existing;
+            if (window.crypto && typeof window.crypto.randomUUID === "function") {
+                existing = window.crypto.randomUUID();
+            } else {
+                existing = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+            }
+            localStorage.setItem(ANON_ID_KEY, existing);
+            return existing;
+        }
+
+        function getTrackingContext() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                anonId: getAnonId(),
+                path: window.location.pathname,
+                referrer: document.referrer || "",
+                utmSource: params.get("utm_source") || "",
+                utmMedium: params.get("utm_medium") || "",
+                utmCampaign: params.get("utm_campaign") || ""
+            };
+        }
+
+        function trackEvent(eventType, payload = {}) {
+            const body = JSON.stringify({
+                eventType,
+                ...getTrackingContext(),
+                ...payload
+            });
+
+            if (navigator.sendBeacon) {
+                const blob = new Blob([body], { type: "application/json" });
+                navigator.sendBeacon(ANALYTICS_ENDPOINT, blob);
+                return;
+            }
+
+            fetch(ANALYTICS_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body,
+                keepalive: true
+            }).catch(() => {});
+        }
+
+        function eventTypeFromCta(cta) {
+            const value = String(cta || "").toLowerCase();
+            const playKeywords = ["play", "simulate", "trade"];
+            return playKeywords.some((keyword) => value.includes(keyword)) ? "play_start" : "product_click";
+        }
+
+        function attachCardTracking() {
+            portfolioRoot.querySelectorAll(".tool-link").forEach((link) => {
+                link.addEventListener("click", () => {
+                    const eventType = eventTypeFromCta(link.dataset.cta);
+                    trackEvent(eventType, {
+                        product: link.dataset.product || "",
+                        category: link.dataset.category || "",
+                        cta: link.dataset.cta || "",
+                        targetUrl: link.getAttribute("href") || ""
+                    });
+                });
+            });
+        }
+
         function renderPortfolio(data) {
             const categories = Array.isArray(data?.categories) ? data.categories : [];
             let totalProducts = 0;
@@ -397,14 +473,22 @@
 
                 const cardsHtml = products.map((product) => {
                     const safeTags = Array.isArray(product?.tags) ? product.tags : [];
-                    const url = product?.url || "#";
+                    const url = normalizeUrl(product?.url);
                     const cta = product?.cta || "Open →";
+                    const productName = product?.name || "Untitled Product";
 
                     return `
                         <article class="tool-card">
                             <div class="tool-header">
-                                <h3 class="tool-name">${escapeHtml(product?.name || "Untitled Product")}</h3>
-                                <a href="${escapeHtml(url)}" class="tool-link">${escapeHtml(cta)}</a>
+                                <h3 class="tool-name">${escapeHtml(productName)}</h3>
+                                <a
+                                    href="${escapeHtml(url)}"
+                                    class="tool-link"
+                                    rel="noopener noreferrer"
+                                    data-product="${escapeHtml(productName)}"
+                                    data-category="${escapeHtml(category?.title || "Uncategorized")}"
+                                    data-cta="${escapeHtml(cta)}"
+                                >${escapeHtml(cta)}</a>
                             </div>
                             <p class="tool-desc">${escapeHtml(product?.description || "")}</p>
                             <div class="tool-meta">
@@ -435,6 +519,8 @@
                 const deploymentLabel = data?.lastDeployment || "Just now";
                 shipStatusText.textContent = `${totalProducts} Active Ships — Last deployment ${deploymentLabel}`;
             }
+
+            attachCardTracking();
         }
 
         async function loadPortfolio() {
@@ -445,6 +531,7 @@
                 }
                 const data = await response.json();
                 renderPortfolio(data);
+                trackEvent("page_view", { sectionCount: Array.isArray(data?.categories) ? data.categories.length : 0 });
             } catch (error) {
                 portfolioRoot.innerHTML = `
                     <section class="section">
