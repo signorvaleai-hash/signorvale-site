@@ -115,6 +115,57 @@
             font-weight: 500;
             letter-spacing: 0.02em;
         }
+
+        .site-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .site-nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            background: var(--card-bg);
+        }
+
+        .site-nav-link:hover {
+            color: var(--text);
+            border-color: var(--text-secondary);
+            transform: translateY(-1px);
+        }
+
+        .quick-links {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-link {
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            background: var(--card-bg);
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            border-color: var(--text-secondary);
+            transform: translateY(-1px);
+        }
         
         header {
             margin-bottom: 80px;
@@ -399,13 +450,29 @@
             .socials {
                 gap: 24px;
             }
+
+            .site-nav {
+                gap: 8px;
+            }
+
+            .site-nav-link {
+                font-size: 11px;
+                padding: 7px 10px;
+            }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="container">
         <header>
+            <nav class="site-nav" aria-label="Primary">
+                <a href="/services/" target="_self" class="site-nav-link">Services</a>
+                <a href="/case-studies/" target="_self" class="site-nav-link">Case Studies</a>
+                <a href="/blog/" target="_self" class="site-nav-link">Blog</a>
+                <a href="/news/" target="_self" class="site-nav-link">News</a>
+                <a href="/about/" target="_self" class="site-nav-link">About</a>
+                <a href="/contact/" target="_self" class="site-nav-link">Contact</a>
+            </nav>
             <div class="brand-lockup">
                 <span class="brand-name">Signor Vale</span>
                 <span class="brand-divider">/</span>
@@ -416,6 +483,13 @@
             <div class="ship-status">
                 <span class="live-dot"></span>
                 <span>12 Active Ships — Last deployment 2h ago</span>
+            </div>
+            <div class="quick-links" aria-label="Quick access links">
+                <a href="/services/" target="_self" class="quick-link">Explore Services</a>
+                <a href="/case-studies/" target="_self" class="quick-link">Read Case Studies</a>
+                <a href="/blog/" target="_self" class="quick-link">Open Blog</a>
+                <a href="/news/" target="_self" class="quick-link">Latest News</a>
+                <a href="/contact/" target="_self" class="quick-link">Start Project</a>
             </div>
         </header>
 
@@ -550,10 +624,10 @@
         
         <footer>
             <div class="socials">
-                <a href="https://twitter.com/signorvale">Twitter/X</a>
-                <a href="https://github.com/signorvale">GitHub</a>
-                <a href="https://linkedin.com/in/signorvale">LinkedIn</a>
-                <a href="mailto:ship@signorvale.com">Email</a>
+                <a href="https://twitter.com/signorvale" target="_blank" rel="noopener noreferrer">Twitter/X</a>
+                <a href="https://github.com/signorvale" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/signorvale" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="mailto:ship@signorvale.com" target="_self">Email</a>
             </div>
             <div class="status">
                 © Signor Vale — Est. 2024
@@ -587,6 +661,10 @@
                 return value;
             }
             return "#";
+        }
+
+        function isExternalUrl(url) {
+            return url.startsWith("https://") || url.startsWith("http://") || url.startsWith("mailto:");
         }
 
         function getAnonId() {
@@ -667,6 +745,8 @@
                     const url = normalizeUrl(product?.url);
                     const cta = product?.cta || "Open →";
                     const productName = product?.name || "Untitled Product";
+                    const target = isExternalUrl(url) ? "_blank" : "_self";
+                    const rel = isExternalUrl(url) ? "noopener noreferrer" : "";
 
                     return `
                         <article class="tool-card">
@@ -675,7 +755,8 @@
                                 <a
                                     href="${escapeHtml(url)}"
                                     class="tool-link"
-                                    rel="noopener noreferrer"
+                                    target="${escapeHtml(target)}"
+                                    rel="${escapeHtml(rel)}"
                                     data-product="${escapeHtml(productName)}"
                                     data-category="${escapeHtml(category?.title || "Uncategorized")}"
                                     data-cta="${escapeHtml(cta)}"
