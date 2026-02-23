@@ -914,6 +914,11 @@ const server = http.createServer(async (req, res) => {
   const method = (req.method || "GET").toUpperCase();
 
   try {
+    if (pathname === "/games" || pathname === "/games/") {
+      redirect(res, "https://games.signorvale.shop/");
+      return;
+    }
+
     if (pathname === "/health") {
       sendJson(res, 200, { ok: true, adminConfigured: isAdminConfigured() }, getSecurityHeaders());
       return;
