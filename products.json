@@ -9,42 +9,66 @@
           "url": "/services/",
           "cta": "Explore →",
           "description": "Core service offerings for AI automation, custom software development, and rapid MVP execution.",
-          "tags": ["Services", "Start Here", "Offerings"]
+          "tags": [
+            "Services",
+            "Start Here",
+            "Offerings"
+          ]
         },
         {
           "name": "Case Studies",
           "url": "/case-studies/",
           "cta": "Open →",
           "description": "Outcome-focused project breakdowns showing practical delivery and measurable impact.",
-          "tags": ["Case Studies", "Proof", "Outcomes"]
+          "tags": [
+            "Case Studies",
+            "Proof",
+            "Outcomes"
+          ]
         },
         {
           "name": "Blog",
           "url": "/blog/",
           "cta": "Read →",
           "description": "Technical writeups on AI workflows, software architecture, and product execution playbooks.",
-          "tags": ["Blog", "SEO", "Insights"]
+          "tags": [
+            "Blog",
+            "SEO",
+            "Insights"
+          ]
         },
         {
           "name": "News",
           "url": "/news/",
           "cta": "Updates →",
           "description": "Recent product updates, publishing activity, and website release notes.",
-          "tags": ["News", "Updates", "Releases"]
+          "tags": [
+            "News",
+            "Updates",
+            "Releases"
+          ]
         },
         {
           "name": "About",
           "url": "/about/",
           "cta": "Profile →",
           "description": "Background, working principles, and who Signor Vale works best with.",
-          "tags": ["About", "Trust", "Profile"]
+          "tags": [
+            "About",
+            "Trust",
+            "Profile"
+          ]
         },
         {
           "name": "Contact",
           "url": "/contact/",
           "cta": "Start →",
           "description": "Share your product challenge and get a practical direction for execution.",
-          "tags": ["Contact", "Consult", "Execution"]
+          "tags": [
+            "Contact",
+            "Consult",
+            "Execution"
+          ]
         }
       ]
     },
@@ -53,31 +77,47 @@
       "products": [
         {
           "name": "Agent Marketplace",
-          "url": "#",
+          "url": "/projects/agent-marketplace/",
           "cta": "Browse →",
           "description": "Amazon-style directory for AI agents. 100+ functional utilities from voice generation to data scraping. Each agent manually tested before listing. No vaporware, no API keys required to browse.",
-          "tags": ["Discovery", "Curated", "Live"]
+          "tags": [
+            "Discovery",
+            "Curated",
+            "Live"
+          ]
         },
         {
           "name": "Digital Marketer Agent",
-          "url": "#",
+          "url": "/projects/digital-marketer-agent/",
           "cta": "Deploy →",
           "description": "Autonomous organic growth system for bootstrapped products. Handles content distribution, channel strategy, and community building with zero paid ad spend. Built for makers who hate marketing.",
-          "tags": ["Automation", "Growth", "Zero-Paid"]
+          "tags": [
+            "Automation",
+            "Growth",
+            "Zero-Paid"
+          ]
         },
         {
           "name": "Auto-Task Distributor",
-          "url": "#",
+          "url": "/projects/auto-task-distributor/",
           "cta": "Assign →",
           "description": "Converts investor pitch decks into departmental task lists with intelligent workload allocation. Smart assignment algorithms match tasks to team capacity and skill sets automatically.",
-          "tags": ["Operations", "AI", "Founder Tools"]
+          "tags": [
+            "Operations",
+            "AI",
+            "Founder Tools"
+          ]
         },
         {
           "name": "Video Creation Studio",
-          "url": "#",
+          "url": "/projects/video-creation-studio/",
           "cta": "Render →",
           "description": "Single-prompt video pipeline generating 3-5 minute polished content. Integrates Seedance 2 and neural voice synthesis for automated YouTube series production without editing software.",
-          "tags": ["Video", "Generative", "Content"]
+          "tags": [
+            "Video",
+            "Generative",
+            "Content"
+          ]
         }
       ]
     },
@@ -89,28 +129,44 @@
           "url": "/games/",
           "cta": "Play Live →",
           "description": "Live browser game experience published on the Signor Vale Games domain. Built for fast loading, smooth play loops, and repeat sessions.",
-          "tags": ["Game", "Live", "Web"]
+          "tags": [
+            "Game",
+            "Live",
+            "Web"
+          ]
         },
         {
           "name": "Orbit Jump",
-          "url": "#",
+          "url": "/projects/orbit-jump/",
           "cta": "Play →",
           "description": "One-thumb asteroid survival with orbital mechanics. Hold to spiral inward toward a planet's core, release to slingshot outward. Physics-based one-more-try engine designed for mobile dead time.",
-          "tags": ["Game", "Mobile-First", "Physics"]
+          "tags": [
+            "Game",
+            "Mobile-First",
+            "Physics"
+          ]
         },
         {
           "name": "Cat Sidewalker",
-          "url": "#",
+          "url": "/projects/cat-sidewalker/",
           "cta": "Simulate →",
           "description": "Infinite side-scrolling feline simulation. Realistic cat movement patterns across procedurally generated environments. HTML5 canvas with parallax backgrounds. Strangely meditative experience.",
-          "tags": ["Simulation", "Canvas", "Zen"]
+          "tags": [
+            "Simulation",
+            "Canvas",
+            "Zen"
+          ]
         },
         {
           "name": "Gen-Z Astrologer",
-          "url": "#",
+          "url": "/projects/gen-z-astrologer/",
           "cta": "Read →",
           "description": "Modern astrology platform stripped of mystic woo-woo. Data-driven daily insights with actionable advice rather than vague predictions. Clean brutalist UX for the skeptical but curious.",
-          "tags": ["Content", "Daily", "Modern"]
+          "tags": [
+            "Content",
+            "Daily",
+            "Modern"
+          ]
         }
       ]
     },
@@ -119,24 +175,36 @@
       "products": [
         {
           "name": "Company OS",
-          "url": "#",
+          "url": "/projects/company-os/",
           "cta": "Install →",
           "description": "All-in-one operating system replacing Slack + DarwinBox + SAP for SMBs. Task distribution, HR, and investor projections in one cohesive workspace. Designed for total company adoption, not just HR departments.",
-          "tags": ["B2B", "All-in-One", "Operations"]
+          "tags": [
+            "B2B",
+            "All-in-One",
+            "Operations"
+          ]
         },
         {
           "name": "Apollo Link Validator",
-          "url": "#",
+          "url": "/projects/apollo-link-validator/",
           "cta": "Audit →",
           "description": "Pharmaceutical inventory crawler validating 10,000+ product URLs across Apollo Pharmacy's catalog. Detects dead links, redirect chains, and 404s before customers encounter them. Automated reconciliation for e-commerce operations at scale.",
-          "tags": ["B2B", "Healthcare", "Automation"]
+          "tags": [
+            "B2B",
+            "Healthcare",
+            "Automation"
+          ]
         },
         {
           "name": "Paper Trade OS",
-          "url": "#",
+          "url": "/projects/paper-trade-os/",
           "cta": "Trade →",
           "description": "Zero-risk trading simulator with real-time P&L, portfolio management, and built-in market education. Every transaction teaches financial mechanics. Holdings dashboard with volatility warnings and performance analytics for beginners.",
-          "tags": ["FinTech", "Education", "Live Data"]
+          "tags": [
+            "FinTech",
+            "Education",
+            "Live Data"
+          ]
         }
       ]
     },
@@ -145,17 +213,25 @@
       "products": [
         {
           "name": "Ebook Formatting Portal",
-          "url": "#",
+          "url": "/projects/ebook-formatting-portal/",
           "cta": "Format →",
           "description": "Drag-and-drop manuscript converter outputting Amazon KDP-compliant files. Handles cover safe-zones, typography standards, and auto-generated tables of contents. Built for high-volume publishing houses and independent authors.",
-          "tags": ["Publishing", "SaaS", "Production"]
+          "tags": [
+            "Publishing",
+            "SaaS",
+            "Production"
+          ]
         },
         {
           "name": "Idea-to-Website Builder",
-          "url": "#",
+          "url": "/projects/idea-to-website-builder/",
           "cta": "Launch →",
           "description": "Minimalist idea launcher converting sketches into live subdomains instantly. No-code deployment with automatic SSL, responsive frameworks, and instant sharing. Ideas become living URLs in seconds.",
-          "tags": ["No-Code", "Hosting", "Fast-Deploy"]
+          "tags": [
+            "No-Code",
+            "Hosting",
+            "Fast-Deploy"
+          ]
         }
       ]
     }
