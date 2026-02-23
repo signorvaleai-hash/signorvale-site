@@ -85,6 +85,13 @@
       "title": "Interactive Experiences",
       "products": [
         {
+          "name": "SignorVale Games",
+          "url": "https://games.signorvale.shop",
+          "cta": "Play →",
+          "description": "Live browser game experience published on the Signor Vale Games domain. Built for fast loading, smooth play loops, and repeat sessions.",
+          "tags": ["Game", "Live", "Web"]
+        },
+        {
           "name": "Orbit Jump",
           "url": "#",
           "cta": "Play →",
