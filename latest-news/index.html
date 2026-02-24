@@ -91,6 +91,17 @@
         const safeAuthor = escapeHtml(item.author || "unknown");
         const points = Number(item.score || 0);
         const comments = Number(item.comments || 0);
+        const discussionUrl = escapeHtml(item.discussionUrl || "");
+        const sourceType = escapeHtml(item.sourceType || "web");
+        const stats = [];
+        if (Number.isFinite(points) && points > 0) stats.push(`${points} points`);
+        if (Number.isFinite(comments) && comments > 0) stats.push(`${comments} comments`);
+        if (safeAuthor && safeAuthor !== "unknown") stats.push(`by ${safeAuthor}`);
+        stats.push(sourceType);
+        const summaryLine = escapeHtml(stats.join(" | "));
+        const discussionLink = discussionUrl
+          ? `<a href="${discussionUrl}" target="_blank" rel="noopener noreferrer">Discussion</a>`
+          : "";
 
         return `
           <article class="card">
@@ -98,9 +109,9 @@
             <p>${safeSource} | ${formatTime(item.publishedAt)}</p>
             <div class="related-links">
               <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">Read</a>
-              <a href="https://news.ycombinator.com/item?id=${Number(item.id || 0)}" target="_blank" rel="noopener noreferrer">Discussion</a>
+              ${discussionLink}
             </div>
-            <p style="margin-top:8px;">${points} points | ${comments} comments | by ${safeAuthor}</p>
+            <p>${summaryLine}</p>
           </article>
         `;
       }).join("");
@@ -118,7 +129,8 @@
         renderNews(payload.items);
 
         const timestamp = payload.generatedAt ? new Date(payload.generatedAt) : new Date();
-        syncStatus.textContent = `Updated ${timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+        const sourceInfo = Array.isArray(payload.sources) ? payload.sources.join(" + ") : "multi-source";
+        syncStatus.textContent = `Updated ${timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} | ${sourceInfo}`;
       } catch (error) {
         renderNews([]);
         syncStatus.textContent = "Retrying";

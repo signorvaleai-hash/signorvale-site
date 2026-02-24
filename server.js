@@ -18,6 +18,26 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
 const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || "";
 const ADMIN_COOKIE_NAME = "sv_admin";
 const SESSION_TTL_SECONDS = 60 * 60 * 12;
+const NEWS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+const NEWS_KEYWORDS = [
+  "ai",
+  "artificial intelligence",
+  "tech",
+  "technology",
+  "software",
+  "internet",
+  "web",
+  "startup",
+  "saas",
+  "programming",
+  "developer",
+  "machine learning",
+  "automation",
+  "cloud",
+  "open source",
+  "llm",
+];
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -35,6 +55,10 @@ const MIME_TYPES = {
 };
 
 const TRACKABLE_EVENTS = new Set(["page_view", "product_click", "play_start", "score_submit", "custom"]);
+let latestNewsCache = {
+  expiresAt: 0,
+  payload: null,
+};
 
 fs.mkdirSync(DATA_ROOT, { recursive: true });
 if (!fs.existsSync(EVENTS_FILE)) {
@@ -237,44 +261,261 @@ function fetchJson(url, timeoutMs = 7000) {
   });
 }
 
-async function fetchLatestTechNews() {
+function fetchText(url, timeoutMs = 9000) {
+  return new Promise((resolve, reject) => {
+    const request = https.get(
+      url,
+      {
+        headers: {
+          "User-Agent": "signorvale-news-feed/1.0",
+          Accept: "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
+        },
+      },
+      (response) => {
+        if ((response.statusCode || 0) < 200 || (response.statusCode || 0) >= 300) {
+          response.resume();
+          reject(new Error(`Request failed: ${response.statusCode}`));
+          return;
+        }
+
+        let raw = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          raw += chunk;
+        });
+        response.on("end", () => resolve(raw));
+      }
+    );
+
+    request.setTimeout(timeoutMs, () => {
+      request.destroy(new Error("Request timeout"));
+    });
+    request.on("error", reject);
+  });
+}
+
+function decodeXmlEntities(value) {
+  return String(value || "")
+    .replace(/<!\[CDATA\[(.*?)\]\]>/gs, "$1")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x2F;/gi, "/")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
+
+function extractTagValue(block, tagName) {
+  const pattern = new RegExp(`<${tagName}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tagName}>`, "i");
+  const match = block.match(pattern);
+  return decodeXmlEntities(match ? match[1] : "");
+}
+
+function parseRssItems(xmlText) {
+  const xml = String(xmlText || "");
+  const items = [];
+  const matches = xml.matchAll(/<item>([\s\S]*?)<\/item>/gi);
+  for (const match of matches) {
+    const rawItem = match[1] || "";
+    const sourceAttr = rawItem.match(/<source[^>]*>([\s\S]*?)<\/source>/i);
+    items.push({
+      title: safeString(extractTagValue(rawItem, "title"), 260),
+      link: safeString(extractTagValue(rawItem, "link"), 1200),
+      pubDate: safeString(extractTagValue(rawItem, "pubDate"), 120),
+      author: safeString(extractTagValue(rawItem, "author"), 120),
+      creator: safeString(extractTagValue(rawItem, "dc:creator"), 120),
+      description: safeString(extractTagValue(rawItem, "description"), 600),
+      source: safeString(decodeXmlEntities(sourceAttr ? sourceAttr[1] : ""), 120),
+    });
+  }
+  return items;
+}
+
+function normalizeNewsUrl(rawUrl) {
+  const input = safeString(rawUrl, 1500);
+  if (!input) return "";
+  try {
+    const parsed = new URL(input);
+    parsed.hash = "";
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "ref", "ref_src"].forEach((key) =>
+      parsed.searchParams.delete(key)
+    );
+    return parsed.toString();
+  } catch {
+    return input;
+  }
+}
+
+function sourceFromUrl(rawUrl, fallback = "Web") {
+  const input = safeString(rawUrl, 1500);
+  if (!input) return fallback;
+  try {
+    return new URL(input).hostname.replace(/^www\./, "");
+  } catch {
+    return fallback;
+  }
+}
+
+function toIsoDate(rawDate) {
+  if (!rawDate) return null;
+  const parsed = new Date(rawDate);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString();
+}
+
+function buildNewsId(namespace, value) {
+  return `${namespace}_${crypto.createHash("sha1").update(String(value)).digest("hex").slice(0, 12)}`;
+}
+
+function isRelevantNewsTitle(title, description = "") {
+  const text = `${safeString(title, 400)} ${safeString(description, 600)}`.toLowerCase();
+  return NEWS_KEYWORDS.some((keyword) => text.includes(keyword));
+}
+
+function dedupeNewsItems(items) {
+  const seen = new Set();
+  const deduped = [];
+  for (const item of items) {
+    const normalizedUrl = normalizeNewsUrl(item.url);
+    const dedupeKey = `${normalizedUrl.toLowerCase()}|${safeString(item.title, 220).toLowerCase()}`;
+    if (seen.has(dedupeKey)) continue;
+    seen.add(dedupeKey);
+    deduped.push({
+      ...item,
+      url: normalizedUrl || item.url,
+    });
+  }
+  return deduped;
+}
+
+async function fetchHackerNewsItems() {
   const topStories = await fetchJson("https://hacker-news.firebaseio.com/v0/topstories.json");
-  const ids = Array.isArray(topStories) ? topStories.slice(0, 25) : [];
+  const ids = Array.isArray(topStories) ? topStories.slice(0, 30) : [];
   if (ids.length === 0) return [];
 
   const storiesRaw = await Promise.all(
-    ids.map((id) =>
-      fetchJson(`https://hacker-news.firebaseio.com/v0/item/${Number(id)}.json`).catch(() => null)
-    )
+    ids.map((id) => fetchJson(`https://hacker-news.firebaseio.com/v0/item/${Number(id)}.json`).catch(() => null))
   );
 
   return storiesRaw
     .filter((story) => story && story.type === "story" && !story.deleted && !story.dead && story.title)
-    .slice(0, 12)
+    .filter((story) => isRelevantNewsTitle(story.title, "hacker news"))
+    .slice(0, 14)
     .map((story) => {
-      const rawUrl = safeString(story.url, 1000);
-      let source = "Hacker News";
-      if (rawUrl) {
-        try {
-          source = new URL(rawUrl).hostname.replace(/^www\./, "");
-        } catch {
-          source = "Hacker News";
-        }
-      }
-
+      const discussionUrl = `https://news.ycombinator.com/item?id=${Number(story.id)}`;
+      const rawUrl = safeString(story.url, 1200) || discussionUrl;
       return {
-        id: Number(story.id),
+        id: buildNewsId("hn", story.id),
         title: safeString(story.title, 240),
-        url: rawUrl || `https://news.ycombinator.com/item?id=${Number(story.id)}`,
-        source,
+        url: rawUrl,
+        source: sourceFromUrl(rawUrl, "Hacker News"),
+        sourceType: "community",
         author: safeString(story.by, 80),
         score: Number(story.score || 0),
         comments: Number(story.descendants || 0),
-        publishedAt: Number.isFinite(Number(story.time))
-          ? new Date(Number(story.time) * 1000).toISOString()
-          : null,
+        publishedAt: Number.isFinite(Number(story.time)) ? new Date(Number(story.time) * 1000).toISOString() : null,
+        discussionUrl,
       };
     });
+}
+
+async function fetchDevToItems() {
+  const tags = ["ai", "software", "webdev"];
+  const resultGroups = await Promise.all(
+    tags.map((tag) =>
+      fetchJson(`https://dev.to/api/articles?per_page=18&tag=${encodeURIComponent(tag)}`).catch(() => [])
+    )
+  );
+  const merged = resultGroups.flat().filter((item) => item && item.id && item.title);
+  const uniqueById = new Map();
+  for (const item of merged) {
+    uniqueById.set(item.id, item);
+  }
+
+  return [...uniqueById.values()]
+    .filter((item) => isRelevantNewsTitle(item.title, item.description || "devto"))
+    .slice(0, 14)
+    .map((item) => ({
+      id: buildNewsId("devto", item.id),
+      title: safeString(item.title, 240),
+      url: safeString(item.url || item.canonical_url, 1200),
+      source: "dev.to",
+      sourceType: "social",
+      author: safeString(item?.user?.name || item?.user?.username, 80),
+      score: Number(item.public_reactions_count || item.positive_reactions_count || 0),
+      comments: Number(item.comments_count || 0),
+      publishedAt: toIsoDate(item.published_timestamp || item.published_at || item.created_at),
+      discussionUrl: safeString(item.url || item.canonical_url, 1200),
+    }));
+}
+
+async function fetchGoogleNewsItems() {
+  const query = encodeURIComponent("(AI OR technology OR software OR internet OR startup OR SaaS)");
+  const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-US&gl=US&ceid=US:en`;
+  const xml = await fetchText(feedUrl);
+  const items = parseRssItems(xml);
+
+  return items
+    .filter((item) => item.title && item.link)
+    .filter((item) => isRelevantNewsTitle(item.title, item.description || "google news"))
+    .slice(0, 16)
+    .map((item) => {
+      const cleanUrl = normalizeNewsUrl(item.link);
+      return {
+        id: buildNewsId("google", `${item.title}_${item.link}`),
+        title: safeString(item.title, 240),
+        url: cleanUrl || item.link,
+        source: item.source || sourceFromUrl(cleanUrl || item.link, "Google News"),
+        sourceType: "search",
+        author: safeString(item.creator || item.author, 80),
+        score: null,
+        comments: null,
+        publishedAt: toIsoDate(item.pubDate),
+        discussionUrl: "",
+      };
+    });
+}
+
+async function fetchLatestTechNews() {
+  const sourceResults = await Promise.allSettled([
+    fetchHackerNewsItems(),
+    fetchDevToItems(),
+    fetchGoogleNewsItems(),
+  ]);
+
+  const merged = [];
+  for (const result of sourceResults) {
+    if (result.status === "fulfilled" && Array.isArray(result.value)) {
+      merged.push(...result.value);
+    }
+  }
+
+  return dedupeNewsItems(merged)
+    .sort((left, right) => {
+      const leftTime = left.publishedAt ? Number(new Date(left.publishedAt)) : 0;
+      const rightTime = right.publishedAt ? Number(new Date(right.publishedAt)) : 0;
+      return rightTime - leftTime;
+    })
+    .slice(0, 24);
+}
+
+async function getLatestNewsPayload() {
+  if (latestNewsCache.payload && Date.now() < latestNewsCache.expiresAt) {
+    return latestNewsCache.payload;
+  }
+
+  const items = await fetchLatestTechNews();
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    items,
+    sources: ["Google News", "DEV Community", "Hacker News"],
+  };
+  latestNewsCache = {
+    expiresAt: Date.now() + NEWS_CACHE_TTL_MS,
+    payload,
+  };
+  return payload;
 }
 
 async function appendEvent(event) {
@@ -1010,20 +1251,32 @@ const server = http.createServer(async (req, res) => {
         return;
       }
       try {
-        const items = await fetchLatestTechNews();
+        const payload = await getLatestNewsPayload();
         sendJson(
           res,
           200,
-          {
-            generatedAt: new Date().toISOString(),
-            items,
-          },
+          payload,
           {
             "Cache-Control": "public, max-age=300",
             ...getSecurityHeaders(),
           }
         );
       } catch {
+        if (latestNewsCache.payload) {
+          sendJson(
+            res,
+            200,
+            {
+              ...latestNewsCache.payload,
+              stale: true,
+            },
+            {
+              "Cache-Control": "public, max-age=120",
+              ...getSecurityHeaders(),
+            }
+          );
+          return;
+        }
         sendJson(res, 502, { error: "News feed unavailable", items: [] }, getSecurityHeaders());
       }
       return;
