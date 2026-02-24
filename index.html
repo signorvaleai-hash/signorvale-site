@@ -59,68 +59,63 @@
       ]
     }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
-            --bg: #fafafa;
-            --text: #0a0a0a;
-            --text-secondary: #737373;
-            --border: #e5e5e5;
-            --accent: #dc2626;
-            --card-bg: #ffffff;
+            --bg: #0a101a;
+            --bg-soft: #131b29;
+            --panel: #171f2d;
+            --panel-alt: #1b2535;
+            --text: #e9eef7;
+            --text-secondary: #a3afc4;
+            --border: rgba(163, 175, 196, 0.2);
+            --accent: #ff6430;
+            --accent-soft: rgba(255, 100, 48, 0.22);
+            --shadow-lg: 0 26px 60px rgba(2, 8, 18, 0.42);
+            --shadow-sm: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 18px rgba(3, 8, 18, 0.3);
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
+            font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+            background:
+                radial-gradient(900px 550px at 8% -5%, #1d2b43 0%, rgba(29, 43, 67, 0) 65%),
+                radial-gradient(700px 500px at 95% 8%, #2c2430 0%, rgba(44, 36, 48, 0) 68%),
+                linear-gradient(165deg, var(--bg) 0%, #0e1522 58%, #12182a 100%);
             color: var(--text);
+            min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-        
+
         .container {
-            max-width: 1100px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 60px 24px;
+            padding: 32px 20px 72px;
         }
-        
-        /* Brand Header */
-        .brand-lockup {
-            display: flex;
-            align-items: baseline;
-            gap: 16px;
-            margin-bottom: 8px;
-        }
-        
-        .brand-name {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-transform: uppercase;
-        }
-        
-        .brand-divider {
-            color: var(--text-secondary);
-            font-weight: 300;
-        }
-        
-        .brand-tag {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 0.02em;
+
+        header {
+            margin-bottom: 54px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 24px 24px 28px;
+            background: linear-gradient(160deg, rgba(28, 38, 55, 0.92) 0%, rgba(19, 27, 41, 0.88) 100%);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(8px);
         }
 
         .site-nav {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
         .site-nav-link {
@@ -129,335 +124,322 @@
             border: 1px solid var(--border);
             border-radius: 999px;
             padding: 8px 12px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            transition: all 0.2s ease;
-            background: var(--card-bg);
+            transition: all 0.24s ease;
+            background: rgba(12, 18, 30, 0.65);
         }
 
         .site-nav-link:hover {
             color: var(--text);
-            border-color: var(--text-secondary);
-            transform: translateY(-1px);
+            border-color: rgba(255, 100, 48, 0.45);
+            background: rgba(20, 28, 41, 0.9);
         }
 
-        .quick-links {
-            margin-top: 18px;
+        .brand-lockup {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
-        .quick-link {
-            text-decoration: none;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 13px;
+        .brand-name {
+            font-family: "Sora", "Manrope", sans-serif;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--text);
-            background: var(--card-bg);
-            transition: all 0.2s ease;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
-        .quick-link:hover {
-            border-color: var(--text-secondary);
-            transform: translateY(-1px);
-        }
-        
-        header {
-            margin-bottom: 80px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        h1 {
-            font-size: clamp(36px, 5vw, 64px);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            margin: 24px 0 16px 0;
-            max-width: 800px;
-        }
-        
-        .subtitle {
-            font-size: 20px;
+        .brand-divider {
             color: var(--text-secondary);
-            font-weight: 400;
-            max-width: 600px;
-            line-height: 1.5;
+            font-weight: 300;
         }
-        
+
+        .brand-tag {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            font-family: "Sora", "Manrope", sans-serif;
+            font-size: clamp(32px, 5.2vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.08;
+            margin: 8px 0 14px;
+            max-width: 760px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(15px, 2.4vw, 18px);
+            max-width: 640px;
+            line-height: 1.55;
+        }
+
         .ship-status {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 32px;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
+            margin-top: 22px;
+            color: #ff7a49;
+            font-size: 12px;
+            font-weight: 700;
             letter-spacing: 0.08em;
-            color: var(--accent);
+            text-transform: uppercase;
         }
-        
+
         .live-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 0 var(--accent-soft);
             animation: pulse 2s infinite;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0% {
+                box-shadow: 0 0 0 0 var(--accent-soft);
+                opacity: 1;
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(255, 100, 48, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 100, 48, 0);
+                opacity: 0.85;
+            }
         }
-        
-        /* Section Organization */
+
         .section {
-            margin-bottom: 80px;
+            margin-bottom: 34px;
+            animation: rise 320ms ease both;
         }
-        
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .section-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .section-title {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-secondary);
-        }
-        
-        .section-count {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent);
-            background: rgba(220, 38, 38, 0.08);
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-        
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 24px;
-        }
-        
-        @media (max-width: 900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .tool-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 28px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .tool-card:hover {
-            border-color: var(--text);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.15);
-        }
-        
-        .tool-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            border-radius: 8px 8px 0 0;
-        }
-        
-        .tool-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .tool-header {
-            display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            gap: 12px;
             margin-bottom: 12px;
-            gap: 16px;
+            padding: 0 6px;
         }
-        
-        .tool-name {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-        
-        .tool-link {
-            color: var(--text-secondary);
-            text-decoration: none;
+
+        .section-title {
+            font-family: "Sora", "Manrope", sans-serif;
             font-size: 13px;
             font-weight: 600;
-            display: inline-flex;
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+            color: #cad2e3;
+        }
+
+        .section-count {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #ff885f;
+            border: 1px solid rgba(255, 100, 48, 0.4);
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: rgba(255, 100, 48, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .tool-card {
+            background: linear-gradient(160deg, var(--panel-alt) 0%, var(--panel) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 16px;
+            transition: all 0.22s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 136, 95, 0.55);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 24px rgba(4, 10, 20, 0.35);
+        }
+
+        .tool-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 10px;
             align-items: center;
-            gap: 4px;
-            transition: all 0.2s;
+            margin-bottom: 6px;
+        }
+
+        .tool-name {
+            font-family: "Sora", "Manrope", sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.25;
+        }
+
+        .tool-link {
+            color: #d4dded;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 1px solid rgba(163, 175, 196, 0.36);
+            border-radius: 999px;
+            padding: 6px 10px;
             white-space: nowrap;
-            flex-shrink: 0;
+            transition: all 0.2s ease;
         }
-        
+
         .tool-link:hover {
-            color: var(--accent);
-            gap: 6px;
+            color: #fff2eb;
+            border-color: rgba(255, 100, 48, 0.7);
+            background: rgba(255, 100, 48, 0.2);
         }
-        
+
         .tool-desc {
             color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            flex-grow: 1;
+            font-size: 14px;
+            line-height: 1.45;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        
+
         .tool-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: #bcc8dd;
         }
-        
+
         .tag {
-            background: transparent;
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 4px;
-            transition: all 0.2s;
+            border: 1px solid rgba(163, 175, 196, 0.3);
+            border-radius: 999px;
+            padding: 4px 8px;
+            background: rgba(8, 12, 20, 0.3);
         }
-        
-        .tool-card:hover .tag {
-            border-color: var(--text-secondary);
-        }
-        
-        /* Footer */
+
         footer {
-            margin-top: 120px;
-            padding-top: 40px;
+            margin-top: 70px;
+            padding-top: 24px;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 18px;
         }
-        
+
         .socials {
             display: flex;
-            gap: 32px;
+            flex-wrap: wrap;
+            gap: 18px;
         }
-        
+
         .socials a {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
-            letter-spacing: -0.01em;
-            transition: color 0.2s;
-            position: relative;
+            font-size: 13px;
+            transition: color 0.2s ease;
         }
-        
-        .socials a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--text);
-            transition: width 0.3s;
-        }
-        
+
         .socials a:hover {
             color: var(--text);
         }
-        
-        .socials a:hover::after {
-            width: 100%;
-        }
-        
+
         .status {
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
-            font-weight: 500;
+            font-size: 12px;
+            color: #8f9eb6;
+            font-family: "SF Mono", "Menlo", "Monaco", monospace;
+            letter-spacing: 0.02em;
         }
 
         .empty-state {
             border: 1px dashed var(--border);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 18px;
             color: var(--text-secondary);
             font-size: 14px;
+            background: rgba(19, 27, 41, 0.72);
         }
 
-        .service-lead {
-            margin-top: -28px;
-            margin-bottom: 72px;
-        }
-
-        .service-lead .tool-link {
-            color: var(--accent);
-        }
-        
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .container {
-                padding: 40px 20px;
+                padding: 18px 14px 52px;
             }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .tool-card {
-                padding: 24px;
-            }
-            
-            footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            
-            .socials {
-                gap: 24px;
+
+            header {
+                padding: 18px 16px 22px;
+                border-radius: 18px;
+                margin-bottom: 34px;
             }
 
             .site-nav {
-                gap: 8px;
+                gap: 6px;
+                margin-bottom: 18px;
             }
 
             .site-nav-link {
-                font-size: 11px;
+                font-size: 10px;
                 padding: 7px 10px;
+            }
+
+            .brand-lockup {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tool-header {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .tool-link {
+                width: fit-content;
+            }
+
+            .tool-name {
+                font-size: 16px;
+            }
+
+            .tool-desc {
+                font-size: 13px;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -482,130 +464,9 @@
             <p class="subtitle">A permanent record of working software released into the wild. If it's here, it's live and handling real users.</p>
             <div class="ship-status">
                 <span class="live-dot"></span>
-                <span>12 Active Ships — Last deployment 2h ago</span>
-            </div>
-            <div class="quick-links" aria-label="Quick access links">
-                <a href="/services/" target="_self" class="quick-link">Explore Services</a>
-                <a href="/case-studies/" target="_self" class="quick-link">Read Case Studies</a>
-                <a href="/blog/" target="_self" class="quick-link">Open Blog</a>
-                <a href="/news/" target="_self" class="quick-link">Latest News</a>
-                <a href="/contact/" target="_self" class="quick-link">Start Project</a>
+                <span>12 Active Ships - Last deployment 2h ago</span>
             </div>
         </header>
-
-        <section class="section service-lead">
-            <div class="section-header">
-                <h2 class="section-title">Tech Company Services</h2>
-                <span class="section-count">03</span>
-            </div>
-            <div class="grid">
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">AI Automation For Startups</h3>
-                        <a href="/services/ai-automation-for-startups/" target="_self" class="tool-link">Explore →</a>
-                    </div>
-                    <p class="tool-desc">Design and deploy AI workflows that replace repetitive ops, improve speed, and reduce cost for lean product teams.</p>
-                    <div class="tool-meta">
-                        <span class="tag">LLM Workflows</span>
-                        <span class="tag">Ops Automation</span>
-                        <span class="tag">Startup Scale</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">Custom Software Development</h3>
-                        <a href="/services/custom-software-development/" target="_self" class="tool-link">Explore →</a>
-                    </div>
-                    <p class="tool-desc">Build reliable internal tools, customer-facing products, and backend systems tailored to your exact workflow and business model.</p>
-                    <div class="tool-meta">
-                        <span class="tag">Full Stack</span>
-                        <span class="tag">Product Engineering</span>
-                        <span class="tag">B2B Systems</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">Rapid MVP Development</h3>
-                        <a href="/services/mvp-development/" target="_self" class="tool-link">Explore →</a>
-                    </div>
-                    <p class="tool-desc">Turn ideas into launch-ready MVPs fast, with practical architecture, conversion-focused UX, and a roadmap for iteration.</p>
-                    <div class="tool-meta">
-                        <span class="tag">MVP Sprint</span>
-                        <span class="tag">Founder Friendly</span>
-                        <span class="tag">Go-To-Market</span>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="section service-lead">
-            <div class="section-header">
-                <h2 class="section-title">Insights & Company</h2>
-                <span class="section-count">05</span>
-            </div>
-            <div class="grid">
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">Case Studies</h3>
-                        <a href="/case-studies/" target="_self" class="tool-link">Open →</a>
-                    </div>
-                    <p class="tool-desc">Real project outcomes across AI automation, software modernization, and MVP launch execution.</p>
-                    <div class="tool-meta">
-                        <span class="tag">Proof</span>
-                        <span class="tag">Outcomes</span>
-                        <span class="tag">B2B</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">Blog</h3>
-                        <a href="/blog/" target="_self" class="tool-link">Read →</a>
-                    </div>
-                    <p class="tool-desc">Practical technical content for founders, developers, and product teams shipping software quickly.</p>
-                    <div class="tool-meta">
-                        <span class="tag">SEO</span>
-                        <span class="tag">Engineering</span>
-                        <span class="tag">Playbooks</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">News</h3>
-                        <a href="/news/" target="_self" class="tool-link">Updates →</a>
-                    </div>
-                    <p class="tool-desc">Latest product, content, and platform updates to keep the site active and transparent.</p>
-                    <div class="tool-meta">
-                        <span class="tag">Updates</span>
-                        <span class="tag">Releases</span>
-                        <span class="tag">Fresh</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">About</h3>
-                        <a href="/about/" target="_self" class="tool-link">Profile →</a>
-                    </div>
-                    <p class="tool-desc">Background, working style, and why teams choose Signor Vale for delivery-focused product engineering.</p>
-                    <div class="tool-meta">
-                        <span class="tag">Profile</span>
-                        <span class="tag">Approach</span>
-                        <span class="tag">Trust</span>
-                    </div>
-                </article>
-                <article class="tool-card">
-                    <div class="tool-header">
-                        <h3 class="tool-name">Contact</h3>
-                        <a href="/contact/" target="_self" class="tool-link">Start →</a>
-                    </div>
-                    <p class="tool-desc">Share your challenge and get a practical scope direction for your automation, software, or MVP project.</p>
-                    <div class="tool-meta">
-                        <span class="tag">Consultation</span>
-                        <span class="tag">Scope</span>
-                        <span class="tag">Execution</span>
-                    </div>
-                </article>
-            </div>
-        </section>
 
         <noscript>
             <section class="section">
