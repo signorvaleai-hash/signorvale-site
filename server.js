@@ -20,23 +20,104 @@ const ADMIN_COOKIE_NAME = "sv_admin";
 const SESSION_TTL_SECONDS = 60 * 60 * 12;
 const NEWS_CACHE_TTL_MS = 5 * 60 * 1000;
 
-const NEWS_KEYWORDS = [
-  "ai",
-  "artificial intelligence",
-  "tech",
-  "technology",
-  "software",
-  "internet",
-  "web",
-  "startup",
-  "saas",
-  "programming",
-  "developer",
-  "machine learning",
-  "automation",
-  "cloud",
-  "open source",
-  "llm",
+const AI_NEWS_PATTERNS = [
+  /\bai\b/i,
+  /artificial intelligence/i,
+  /generative ai/i,
+  /\bllm\b/i,
+  /large language model/i,
+  /machine learning/i,
+  /deep learning/i,
+  /ai agent/i,
+  /agentic/i,
+  /openai/i,
+  /anthropic/i,
+  /gemini/i,
+  /copilot/i,
+  /chatgpt/i,
+  /\bgpt[- ]?\d*\b/i,
+  /diffusion/i,
+  /multimodal/i,
+  /inference/i,
+  /fine[- ]tuning/i,
+];
+
+const BUSINESS_BLUEPRINTS = [
+  {
+    key: "agent_automation",
+    keywords: [/agent/i, /workflow/i, /automation/i, /copilot/i],
+    opportunity: "AI Workflow Automation Platform",
+    useCase:
+      "Deploy task-specific agents to automate repetitive operations in support, sales ops, and back office workflows.",
+    targetCustomer: "SMBs and growth-stage startups",
+    revenueStream: "SaaS subscriptions + onboarding services",
+    pricingLabel: "$299/month per team + $2,500 onboarding",
+    arpaMonthly: 299,
+    cacUsd: 900,
+    grossMarginPct: 82,
+    year1BaseCustomers: 120,
+    year3BaseCustomers: 900,
+  },
+  {
+    key: "dev_tools_ai",
+    keywords: [/developer/i, /code/i, /copilot/i, /software/i, /engineering/i],
+    opportunity: "AI Engineering Productivity Suite",
+    useCase:
+      "Ship internal coding copilots for bug triage, test generation, and code review acceleration across product teams.",
+    targetCustomer: "Tech teams with 10-200 engineers",
+    revenueStream: "Per-seat SaaS licensing",
+    pricingLabel: "$39/seat/month",
+    arpaMonthly: 780,
+    cacUsd: 1800,
+    grossMarginPct: 86,
+    year1BaseCustomers: 80,
+    year3BaseCustomers: 560,
+  },
+  {
+    key: "ai_security",
+    keywords: [/security/i, /vulnerability/i, /threat/i, /risk/i, /compliance/i],
+    opportunity: "AI Security Monitoring Layer",
+    useCase:
+      "Continuously detect risky prompts, sensitive data leakage, and unsafe AI actions before production incidents.",
+    targetCustomer: "B2B SaaS and regulated startups",
+    revenueStream: "SaaS + compliance reporting add-on",
+    pricingLabel: "$1,200/month base + usage tier",
+    arpaMonthly: 1200,
+    cacUsd: 3200,
+    grossMarginPct: 78,
+    year1BaseCustomers: 45,
+    year3BaseCustomers: 260,
+  },
+  {
+    key: "ai_media",
+    keywords: [/video/i, /image/i, /audio/i, /voice/i, /creator/i, /content/i],
+    opportunity: "AI Content Production Studio",
+    useCase:
+      "Provide end-to-end generation of ad creatives, short-form videos, and localized media for marketing teams.",
+    targetCustomer: "Creator businesses and DTC brands",
+    revenueStream: "Retainer + usage-based rendering fees",
+    pricingLabel: "$999/month + rendering credits",
+    arpaMonthly: 999,
+    cacUsd: 1500,
+    grossMarginPct: 74,
+    year1BaseCustomers: 60,
+    year3BaseCustomers: 340,
+  },
+  {
+    key: "ai_enterprise_generic",
+    keywords: [],
+    opportunity: "Vertical AI Intelligence Product",
+    useCase:
+      "Productize the trend into a focused AI workflow for a specific industry pain point and sell as recurring software.",
+    targetCustomer: "Niche vertical operators",
+    revenueStream: "Subscription SaaS",
+    pricingLabel: "$399/month per customer",
+    arpaMonthly: 399,
+    cacUsd: 1100,
+    grossMarginPct: 80,
+    year1BaseCustomers: 90,
+    year3BaseCustomers: 520,
+  },
 ];
 
 const MIME_TYPES = {
@@ -368,9 +449,68 @@ function buildNewsId(namespace, value) {
   return `${namespace}_${crypto.createHash("sha1").update(String(value)).digest("hex").slice(0, 12)}`;
 }
 
-function isRelevantNewsTitle(title, description = "") {
-  const text = `${safeString(title, 400)} ${safeString(description, 600)}`.toLowerCase();
-  return NEWS_KEYWORDS.some((keyword) => text.includes(keyword));
+function isAiFocusedNews(title, description = "", rawUrl = "") {
+  const text = `${safeString(title, 500)} ${safeString(description, 800)} ${safeString(rawUrl, 800)}`;
+  return AI_NEWS_PATTERNS.some((pattern) => pattern.test(text));
+}
+
+function pickBusinessBlueprint(item) {
+  const text = `${safeString(item.title, 260)} ${safeString(item.source, 120)} ${safeString(item.url, 500)}`;
+  for (const blueprint of BUSINESS_BLUEPRINTS) {
+    if (!blueprint.keywords.length) continue;
+    if (blueprint.keywords.some((pattern) => pattern.test(text))) {
+      return blueprint;
+    }
+  }
+  return BUSINESS_BLUEPRINTS[BUSINESS_BLUEPRINTS.length - 1];
+}
+
+function toWholeDollars(value) {
+  return Math.round(Number(value) || 0);
+}
+
+function buildBusinessIntel(item) {
+  const blueprint = pickBusinessBlueprint(item);
+  const scoreSignal = Number(item.score || 0);
+  const commentSignal = Number(item.comments || 0);
+  const sourceMultiplier =
+    item.sourceType === "search" ? 1.06 : item.sourceType === "community" ? 1.13 : 1.0;
+  const demandSignal = 1 + Math.min(0.55, scoreSignal / 900 + commentSignal / 1400);
+  const multiplier = sourceMultiplier * demandSignal;
+
+  const year1Customers = Math.max(20, Math.round(blueprint.year1BaseCustomers * multiplier));
+  const year3Customers = Math.max(
+    year1Customers + 40,
+    Math.round(blueprint.year3BaseCustomers * multiplier * 1.15)
+  );
+
+  const year1RevenueUsd = toWholeDollars(year1Customers * blueprint.arpaMonthly * 12);
+  const year3RevenueUsd = toWholeDollars(year3Customers * blueprint.arpaMonthly * 12);
+  const grossMargin = blueprint.grossMarginPct / 100;
+  const ltvUsd = toWholeDollars(blueprint.arpaMonthly * 26 * grossMargin);
+  const paybackMonths = Math.max(1, Math.round(blueprint.cacUsd / (blueprint.arpaMonthly * grossMargin)));
+
+  return {
+    opportunity: blueprint.opportunity,
+    useCase: blueprint.useCase,
+    targetCustomer: blueprint.targetCustomer,
+    businessModel: {
+      revenueStream: blueprint.revenueStream,
+      pricing: blueprint.pricingLabel,
+      grossMarginPct: blueprint.grossMarginPct,
+      cacUsd: blueprint.cacUsd,
+      ltvUsd,
+    },
+    financials: {
+      year1RevenueUsd,
+      year3RevenueUsd,
+      year1Customers,
+      year3Customers,
+      paybackMonths,
+      assumptions:
+        "Scenario estimate from pricing benchmarks, source momentum, and conservative customer acquisition assumptions.",
+    },
+  };
 }
 
 function dedupeNewsItems(items) {
@@ -400,8 +540,8 @@ async function fetchHackerNewsItems() {
 
   return storiesRaw
     .filter((story) => story && story.type === "story" && !story.deleted && !story.dead && story.title)
-    .filter((story) => isRelevantNewsTitle(story.title, "hacker news"))
-    .slice(0, 14)
+    .filter((story) => isAiFocusedNews(story.title, "hacker news", story.url || ""))
+    .slice(0, 18)
     .map((story) => {
       const discussionUrl = `https://news.ycombinator.com/item?id=${Number(story.id)}`;
       const rawUrl = safeString(story.url, 1200) || discussionUrl;
@@ -421,7 +561,7 @@ async function fetchHackerNewsItems() {
 }
 
 async function fetchDevToItems() {
-  const tags = ["ai", "software", "webdev"];
+  const tags = ["ai", "machine-learning", "llm", "openai"];
   const resultGroups = await Promise.all(
     tags.map((tag) =>
       fetchJson(`https://dev.to/api/articles?per_page=18&tag=${encodeURIComponent(tag)}`).catch(() => [])
@@ -434,8 +574,8 @@ async function fetchDevToItems() {
   }
 
   return [...uniqueById.values()]
-    .filter((item) => isRelevantNewsTitle(item.title, item.description || "devto"))
-    .slice(0, 14)
+    .filter((item) => isAiFocusedNews(item.title, item.description || "devto", item.url || ""))
+    .slice(0, 18)
     .map((item) => ({
       id: buildNewsId("devto", item.id),
       title: safeString(item.title, 240),
@@ -451,15 +591,17 @@ async function fetchDevToItems() {
 }
 
 async function fetchGoogleNewsItems() {
-  const query = encodeURIComponent("(AI OR technology OR software OR internet OR startup OR SaaS)");
+  const query = encodeURIComponent(
+    '("artificial intelligence" OR "generative ai" OR "ai agent" OR "machine learning" OR "large language model" OR llm OR openai OR anthropic OR gemini) when:1d'
+  );
   const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-US&gl=US&ceid=US:en`;
   const xml = await fetchText(feedUrl);
   const items = parseRssItems(xml);
 
   return items
     .filter((item) => item.title && item.link)
-    .filter((item) => isRelevantNewsTitle(item.title, item.description || "google news"))
-    .slice(0, 16)
+    .filter((item) => isAiFocusedNews(item.title, item.description || "google news", item.link))
+    .slice(0, 24)
     .map((item) => {
       const cleanUrl = normalizeNewsUrl(item.link);
       return {
@@ -492,12 +634,22 @@ async function fetchLatestTechNews() {
   }
 
   return dedupeNewsItems(merged)
+    .filter((item) => {
+      if (!item.publishedAt) return true;
+      const itemTime = Number(new Date(item.publishedAt));
+      if (!Number.isFinite(itemTime)) return false;
+      return Date.now() - itemTime <= 7 * 24 * 60 * 60 * 1000;
+    })
     .sort((left, right) => {
       const leftTime = left.publishedAt ? Number(new Date(left.publishedAt)) : 0;
       const rightTime = right.publishedAt ? Number(new Date(right.publishedAt)) : 0;
       return rightTime - leftTime;
     })
-    .slice(0, 24);
+    .slice(0, 24)
+    .map((item) => ({
+      ...item,
+      businessIntel: buildBusinessIntel(item),
+    }));
 }
 
 async function getLatestNewsPayload() {
@@ -509,6 +661,9 @@ async function getLatestNewsPayload() {
   const payload = {
     generatedAt: new Date().toISOString(),
     items,
+    focus: "AI-only",
+    financialModelDisclaimer:
+      "Business model and financials are scenario estimates for ideation, not investment advice.",
     sources: ["Google News", "DEV Community", "Hacker News"],
   };
   latestNewsCache = {

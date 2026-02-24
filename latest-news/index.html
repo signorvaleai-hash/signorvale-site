@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Latest News | Signor Vale</title>
-  <meta name="description" content="Daily technology headlines from top sources, presented in the Signor Vale site style." />
+  <meta name="description" content="AI-only news feed with business model and financial scenario analysis for each story." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://signorvale.com/latest-news/" />
   <meta property="og:type" content="website" />
@@ -29,9 +29,9 @@
     </div>
 
     <section class="hero">
-      <p class="eyebrow">Daily Tech Feed</p>
-      <h1>Latest News You Can Read Every Day</h1>
-      <p class="lead">Live headlines pulled from top stories and shown directly inside the Signor Vale experience. No separate interface, no context switch.</p>
+      <p class="eyebrow">AI Intelligence Feed</p>
+      <h1>AI News + Business Model Insights</h1>
+      <p class="lead">Only AI-related headlines. Every story includes a business usage idea, monetization model, and revenue scenario so you can evaluate opportunities quickly.</p>
       <div class="cta-row">
         <button id="refresh-button" class="button secondary" type="button">Refresh Feed</button>
         <a class="button primary" href="/news/">Open News Archive</a>
@@ -39,14 +39,14 @@
     </section>
 
     <section class="kpi" aria-live="polite">
-      <article class="card"><strong id="story-count">00</strong><p>Stories currently available.</p></article>
-      <article class="card"><strong>Live Source</strong><p>Hacker News top stories with direct article links.</p></article>
-      <article class="card"><strong id="sync-status">Syncing</strong><p>Feed refresh state and last update status.</p></article>
+      <article class="card"><strong id="story-count">00</strong><p>AI stories currently available.</p></article>
+      <article class="card"><strong id="feed-focus">AI-Only</strong><p>Filtered to artificial intelligence signals only.</p></article>
+      <article class="card"><strong id="sync-status">Syncing</strong><p>Feed refresh state and source sync status.</p></article>
     </section>
 
     <section id="news-grid" class="grid" aria-live="polite"></section>
 
-    <footer>Latest News section for signorvale.com with synced highlight accents for key information.</footer>
+    <footer id="feed-note">Business and financial outputs are scenario estimates for ideation.</footer>
   </div>
 
   <script>
@@ -54,6 +54,8 @@
     const refreshButton = document.getElementById("refresh-button");
     const storyCount = document.getElementById("story-count");
     const syncStatus = document.getElementById("sync-status");
+    const feedFocus = document.getElementById("feed-focus");
+    const feedNote = document.getElementById("feed-note");
 
     function formatCount(value) {
       return String(value).padStart(2, "0");
@@ -75,6 +77,16 @@
         .replaceAll("'", "&#39;");
     }
 
+    function formatMoney(value) {
+      const amount = Number(value || 0);
+      if (!Number.isFinite(amount) || amount <= 0) return "N/A";
+      return new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
     function renderNews(items) {
       const stories = Array.isArray(items) ? items : [];
       storyCount.textContent = formatCount(stories.length);
@@ -93,6 +105,9 @@
         const comments = Number(item.comments || 0);
         const discussionUrl = escapeHtml(item.discussionUrl || "");
         const sourceType = escapeHtml(item.sourceType || "web");
+        const businessIntel = item.businessIntel || {};
+        const businessModel = businessIntel.businessModel || {};
+        const financials = businessIntel.financials || {};
         const stats = [];
         if (Number.isFinite(points) && points > 0) stats.push(`${points} points`);
         if (Number.isFinite(comments) && comments > 0) stats.push(`${comments} comments`);
@@ -112,6 +127,11 @@
               ${discussionLink}
             </div>
             <p>${summaryLine}</p>
+            <p><strong>Business Opportunity:</strong> ${escapeHtml(businessIntel.opportunity || "AI vertical product opportunity")}</p>
+            <p><strong>Use Case:</strong> ${escapeHtml(businessIntel.useCase || "Convert this trend into a workflow product with clear ROI.")}</p>
+            <p><strong>Business Model:</strong> ${escapeHtml(businessModel.pricing || "Subscription pricing")} | ${escapeHtml(businessModel.revenueStream || "Recurring SaaS")} | Margin ${Number(businessModel.grossMarginPct || 0)}%</p>
+            <p><strong>Financial Scenario:</strong> Year 1 ${formatMoney(financials.year1RevenueUsd)} | Year 3 ${formatMoney(financials.year3RevenueUsd)} | Payback ${Number(financials.paybackMonths || 0)} months</p>
+            <p><strong>Assumptions:</strong> ${escapeHtml(financials.assumptions || "Scenario estimate for idea validation.")}</p>
           </article>
         `;
       }).join("");
@@ -131,9 +151,12 @@
         const timestamp = payload.generatedAt ? new Date(payload.generatedAt) : new Date();
         const sourceInfo = Array.isArray(payload.sources) ? payload.sources.join(" + ") : "multi-source";
         syncStatus.textContent = `Updated ${timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} | ${sourceInfo}`;
+        feedFocus.textContent = payload.focus || "AI-Only";
+        feedNote.textContent = payload.financialModelDisclaimer || "Business and financial outputs are scenario estimates for ideation.";
       } catch (error) {
         renderNews([]);
         syncStatus.textContent = "Retrying";
+        feedFocus.textContent = "AI-Only";
         console.error("latest-news load failed", error);
       } finally {
         refreshButton.disabled = false;
