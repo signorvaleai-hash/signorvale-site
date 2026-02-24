@@ -1,4 +1,5 @@
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -195,6 +196,85 @@ function parseReferrerHost(value) {
   } catch {
     return "";
   }
+}
+
+function fetchJson(url, timeoutMs = 7000) {
+  return new Promise((resolve, reject) => {
+    const request = https.get(
+      url,
+      {
+        headers: {
+          "User-Agent": "signorvale-news-feed/1.0",
+          Accept: "application/json",
+        },
+      },
+      (response) => {
+        if ((response.statusCode || 0) < 200 || (response.statusCode || 0) >= 300) {
+          response.resume();
+          reject(new Error(`Request failed: ${response.statusCode}`));
+          return;
+        }
+
+        let raw = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          raw += chunk;
+        });
+        response.on("end", () => {
+          try {
+            resolve(JSON.parse(raw));
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+    );
+
+    request.setTimeout(timeoutMs, () => {
+      request.destroy(new Error("Request timeout"));
+    });
+    request.on("error", reject);
+  });
+}
+
+async function fetchLatestTechNews() {
+  const topStories = await fetchJson("https://hacker-news.firebaseio.com/v0/topstories.json");
+  const ids = Array.isArray(topStories) ? topStories.slice(0, 25) : [];
+  if (ids.length === 0) return [];
+
+  const storiesRaw = await Promise.all(
+    ids.map((id) =>
+      fetchJson(`https://hacker-news.firebaseio.com/v0/item/${Number(id)}.json`).catch(() => null)
+    )
+  );
+
+  return storiesRaw
+    .filter((story) => story && story.type === "story" && !story.deleted && !story.dead && story.title)
+    .slice(0, 12)
+    .map((story) => {
+      const rawUrl = safeString(story.url, 1000);
+      let source = "Hacker News";
+      if (rawUrl) {
+        try {
+          source = new URL(rawUrl).hostname.replace(/^www\./, "");
+        } catch {
+          source = "Hacker News";
+        }
+      }
+
+      return {
+        id: Number(story.id),
+        title: safeString(story.title, 240),
+        url: rawUrl || `https://news.ycombinator.com/item?id=${Number(story.id)}`,
+        source,
+        author: safeString(story.by, 80),
+        score: Number(story.score || 0),
+        comments: Number(story.descendants || 0),
+        publishedAt: Number.isFinite(Number(story.time))
+          ? new Date(Number(story.time) * 1000).toISOString()
+          : null,
+      };
+    });
 }
 
 async function appendEvent(event) {
@@ -921,6 +1001,31 @@ const server = http.createServer(async (req, res) => {
 
     if (pathname === "/health") {
       sendJson(res, 200, { ok: true, adminConfigured: isAdminConfigured() }, getSecurityHeaders());
+      return;
+    }
+
+    if (pathname === "/api/latest-news") {
+      if (method !== "GET") {
+        sendJson(res, 405, { error: "Method not allowed" }, getSecurityHeaders());
+        return;
+      }
+      try {
+        const items = await fetchLatestTechNews();
+        sendJson(
+          res,
+          200,
+          {
+            generatedAt: new Date().toISOString(),
+            items,
+          },
+          {
+            "Cache-Control": "public, max-age=300",
+            ...getSecurityHeaders(),
+          }
+        );
+      } catch {
+        sendJson(res, 502, { error: "News feed unavailable", items: [] }, getSecurityHeaders());
+      }
       return;
     }
 

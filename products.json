@@ -2,6 +2,22 @@
   "lastDeployment": "Just now",
   "categories": [
     {
+      "title": "Latest News",
+      "products": [
+        {
+          "name": "Daily Tech News Radar",
+          "url": "/latest-news/",
+          "cta": "Read Daily ->",
+          "description": "Live daily technology headlines with direct links, source labels, score signals, and fast reading cards.",
+          "tags": [
+            "Daily",
+            "Tech",
+            "Live Feed"
+          ]
+        }
+      ]
+    },
+    {
       "title": "Artificial Intelligence",
       "products": [
         {
