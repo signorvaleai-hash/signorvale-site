@@ -4,445 +4,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Latest News | Signor Vale</title>
-  <meta name="description" content="Daily tech headlines from top stories so you can read fresh updates each day." />
+  <meta name="description" content="Daily technology headlines from top sources, presented in the Signor Vale site style." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://signorvale.com/latest-news/" />
-  <link rel="alternate" hreflang="en-us" href="https://signorvale.com/latest-news/" />
-  <link rel="alternate" hreflang="x-default" href="https://signorvale.com/latest-news/" />
-
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://signorvale.com/latest-news/" />
-  <meta property="og:site_name" content="Signor Vale" />
   <meta property="og:title" content="Latest News | Signor Vale" />
-  <meta property="og:description" content="Daily technology headlines in the same experience as the Signor Vale site." />
+  <meta property="og:description" content="Read fresh daily tech headlines from Signor Vale." />
+  <meta property="og:url" content="https://signorvale.com/latest-news/" />
   <meta property="og:image" content="https://signorvale.com/og-image.svg" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Latest News | Signor Vale" />
-  <meta name="twitter:description" content="Read daily technology headlines from Signor Vale." />
-  <meta name="twitter:image" content="https://signorvale.com/og-image.svg" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #ecf0f3;
-      --panel: #ecf0f3;
-      --text: #1f2b3d;
-      --text-secondary: #6e7b90;
-      --accent: #4f6486;
-      --neu-shadow-out: 18px 18px 30px #d1d9e6, -18px -18px 30px #ffffff;
-      --neu-shadow-soft: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
-      --neu-shadow-inset-soft: inset 8px 8px 16px #d7dfe9, inset -8px -8px 16px #ffffff;
-    }
-
-    body {
-      font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 32px 20px 72px;
-    }
-
-    header {
-      margin-bottom: 40px;
-      border-radius: 30px;
-      padding: 26px 26px 30px;
-      background: var(--panel);
-      box-shadow: var(--neu-shadow-out);
-    }
-
-    .site-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .site-nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: all 0.24s ease;
-      background: var(--panel);
-      box-shadow: var(--neu-shadow-soft);
-      border: 0;
-      cursor: pointer;
-    }
-
-    .site-nav-link:hover {
-      color: var(--text);
-      box-shadow: var(--neu-shadow-inset-soft);
-    }
-
-    .brand-lockup {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .brand-name {
-      font-family: "Sora", "Manrope", sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .brand-divider {
-      color: var(--text-secondary);
-      font-weight: 300;
-    }
-
-    .brand-tag {
-      font-size: 13px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
-    h1 {
-      font-family: "Sora", "Manrope", sans-serif;
-      font-size: clamp(32px, 5.2vw, 56px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-      margin: 8px 0 14px;
-      max-width: 840px;
-    }
-
-    .subtitle {
-      color: var(--text-secondary);
-      font-size: clamp(15px, 2.4vw, 18px);
-      max-width: 740px;
-      line-height: 1.55;
-    }
-
-    .ship-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 22px;
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .live-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 0 rgba(79, 100, 134, 0.35);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(79, 100, 134, 0.35);
-        opacity: 1;
-      }
-      70% {
-        box-shadow: 0 0 0 8px rgba(79, 100, 134, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(79, 100, 134, 0);
-        opacity: 0.85;
-      }
-    }
-
-    .section {
-      margin-bottom: 34px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      padding: 0 6px;
-    }
-
-    .section-title {
-      font-family: "Sora", "Manrope", sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: #51617d;
-    }
-
-    .section-count {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-      padding: 2px 10px;
-      border-radius: 999px;
-      background: var(--panel);
-      box-shadow: var(--neu-shadow-soft);
-    }
-
-    .section-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .tool-card {
-      background: var(--panel);
-      border-radius: 16px;
-      padding: 14px 16px;
-      transition: all 0.22s ease;
-      box-shadow: var(--neu-shadow-soft);
-    }
-
-    .tool-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 12px 12px 24px #cfd7e3, -12px -12px 24px #ffffff;
-    }
-
-    .tool-header {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .tool-name {
-      font-family: "Sora", "Manrope", sans-serif;
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.25;
-    }
-
-    .tool-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      border-radius: 999px;
-      padding: 6px 10px;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-      background: var(--panel);
-      box-shadow: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
-    }
-
-    .tool-link:hover {
-      color: var(--text);
-      box-shadow: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
-    }
-
-    .tool-desc {
-      color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.45;
-      margin-bottom: 10px;
-    }
-
-    .tool-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #7a879e;
-    }
-
-    .tag {
-      border-radius: 999px;
-      padding: 4px 8px;
-      background: var(--panel);
-      box-shadow: 4px 4px 8px #d5dde8, -4px -4px 8px #ffffff;
-    }
-
-    .empty-state {
-      border-radius: 18px;
-      padding: 18px;
-      color: var(--text-secondary);
-      font-size: 14px;
-      background: var(--panel);
-      box-shadow: var(--neu-shadow-inset-soft);
-    }
-
-    footer {
-      margin-top: 70px;
-      padding: 18px 20px;
-      border-radius: 20px;
-      background: var(--panel);
-      box-shadow: var(--neu-shadow-soft);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 18px;
-    }
-
-    .socials {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-    }
-
-    .socials a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 13px;
-      transition: color 0.2s ease;
-    }
-
-    .socials a:hover {
-      color: var(--text);
-    }
-
-    .status {
-      font-size: 12px;
-      color: #8895aa;
-      font-family: "SF Mono", "Menlo", "Monaco", monospace;
-      letter-spacing: 0.02em;
-    }
-
-    @media (max-width: 700px) {
-      .container {
-        padding: 18px 14px 52px;
-      }
-
-      header {
-        padding: 18px 16px 22px;
-        border-radius: 22px;
-        margin-bottom: 34px;
-      }
-
-      .site-nav {
-        gap: 6px;
-        margin-bottom: 18px;
-      }
-
-      .site-nav-link {
-        font-size: 10px;
-        padding: 7px 10px;
-      }
-
-      .brand-lockup {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .tool-header {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-
-      .tool-link {
-        width: fit-content;
-      }
-
-      .tool-name {
-        font-size: 16px;
-      }
-
-      .tool-desc {
-        font-size: 13px;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/services/styles.css" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="/services/" class="site-nav-link">Services</a>
-        <a href="/case-studies/" class="site-nav-link">Case Studies</a>
-        <a href="/blog/" class="site-nav-link">Blog</a>
-        <a href="/news/" class="site-nav-link">News</a>
-        <a href="/about/" class="site-nav-link">About</a>
-        <a href="/contact/" class="site-nav-link">Contact</a>
-      </nav>
-      <div class="brand-lockup">
-        <span class="brand-name">Signor Vale</span>
-        <span class="brand-divider">/</span>
-        <span class="brand-tag">Independent Product Studio</span>
+    <div class="nav">
+      <a class="brand" href="/">Signor Vale</a>
+      <div class="nav-links">
+        <a href="/services/">Services</a>
+        <a href="/case-studies/">Case Studies</a>
+        <a href="/blog/">Blog</a>
+        <a href="/news/">News</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
       </div>
-      <h1>Latest News Feed.<br>Daily headlines, ready to read.</h1>
-      <p class="subtitle">This is your daily-read news section inside the same Signor Vale experience. Stories refresh automatically every 5 minutes and can be updated anytime with one click.</p>
-      <div class="ship-status">
-        <span class="live-dot"></span>
-        <span id="last-updated">Loading latest stories</span>
-      </div>
-    </header>
+    </div>
 
-    <main>
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">Latest News</h2>
-          <div class="section-actions">
-            <button id="refresh-button" class="site-nav-link" type="button">Refresh</button>
-            <span id="story-count" class="section-count">00</span>
-          </div>
-        </div>
-        <div id="news-grid" class="grid" aria-live="polite"></div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="socials">
-        <a href="https://twitter.com/signorvale" target="_blank" rel="noopener noreferrer">Twitter/X</a>
-        <a href="https://github.com/signorvale" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/in/signorvale" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="mailto:ship@signorvale.com">Email</a>
+    <section class="hero">
+      <p class="eyebrow">Daily Tech Feed</p>
+      <h1>Latest News You Can Read Every Day</h1>
+      <p class="lead">Live headlines pulled from top stories and shown directly inside the Signor Vale experience. No separate interface, no context switch.</p>
+      <div class="cta-row">
+        <button id="refresh-button" class="button secondary" type="button">Refresh Feed</button>
+        <a class="button primary" href="/news/">Open News Archive</a>
       </div>
-      <div class="status">Latest News section on signorvale.com</div>
-    </footer>
+    </section>
+
+    <section class="kpi" aria-live="polite">
+      <article class="card"><strong id="story-count">00</strong><p>Stories currently available.</p></article>
+      <article class="card"><strong>Live Source</strong><p>Hacker News top stories with direct article links.</p></article>
+      <article class="card"><strong id="sync-status">Syncing</strong><p>Feed refresh state and last update status.</p></article>
+    </section>
+
+    <section id="news-grid" class="grid" aria-live="polite"></section>
+
+    <footer>Latest News section for signorvale.com with synced highlight accents for key information.</footer>
   </div>
 
   <script>
     const newsGrid = document.getElementById("news-grid");
-    const updatedText = document.getElementById("last-updated");
     const refreshButton = document.getElementById("refresh-button");
     const storyCount = document.getElementById("story-count");
+    const syncStatus = document.getElementById("sync-status");
 
     function formatCount(value) {
       return String(value).padStart(2, "0");
@@ -469,7 +80,7 @@
       storyCount.textContent = formatCount(stories.length);
 
       if (stories.length === 0) {
-        newsGrid.innerHTML = '<div class="empty-state">Feed is temporarily unavailable. Press refresh in a few seconds.</div>';
+        newsGrid.innerHTML = '<article class="card"><h2>Feed Unavailable</h2><p>Could not load stories right now. Try refreshing in a minute.</p></article>';
         return;
       }
 
@@ -482,24 +93,21 @@
         const comments = Number(item.comments || 0);
 
         return `
-          <article class="tool-card">
-            <div class="tool-header">
-              <h3 class="tool-name">${safeTitle}</h3>
-              <a href="${safeUrl}" class="tool-link" target="_blank" rel="noopener noreferrer">Read -></a>
+          <article class="card">
+            <h2><a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeTitle}</a></h2>
+            <p>${safeSource} | ${formatTime(item.publishedAt)}</p>
+            <div class="related-links">
+              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">Read</a>
+              <a href="https://news.ycombinator.com/item?id=${Number(item.id || 0)}" target="_blank" rel="noopener noreferrer">Discussion</a>
             </div>
-            <p class="tool-desc">Source: ${safeSource} | Published: ${formatTime(item.publishedAt)}</p>
-            <div class="tool-meta">
-              <span class="tag">${points} Points</span>
-              <span class="tag">${comments} Comments</span>
-              <span class="tag">By ${safeAuthor}</span>
-            </div>
+            <p style="margin-top:8px;">${points} points | ${comments} comments | by ${safeAuthor}</p>
           </article>
         `;
       }).join("");
     }
 
     async function loadNews() {
-      updatedText.textContent = "Updating feed";
+      syncStatus.textContent = "Syncing";
       refreshButton.disabled = true;
 
       try {
@@ -510,10 +118,10 @@
         renderNews(payload.items);
 
         const timestamp = payload.generatedAt ? new Date(payload.generatedAt) : new Date();
-        updatedText.textContent = `Live feed active - last updated ${timestamp.toLocaleString()}`;
+        syncStatus.textContent = `Updated ${timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
       } catch (error) {
         renderNews([]);
-        updatedText.textContent = "Feed unavailable - retrying automatically";
+        syncStatus.textContent = "Retrying";
         console.error("latest-news load failed", error);
       } finally {
         refreshButton.disabled = false;
