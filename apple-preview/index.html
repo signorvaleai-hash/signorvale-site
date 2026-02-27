@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple UX Preview | Signor Vale</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --accent: #0a84ff;
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: rgba(60, 60, 67, 0.18);
+      --elev: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --surface: #1c1c1e;
+        --text: #f5f5f7;
+        --muted: #a1a1a6;
+        --line: rgba(84, 84, 88, 0.65);
+        --elev: 0 4px 12px rgba(0, 0, 0, 0.28);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    .top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--text);
+      background: var(--surface);
+      box-shadow: var(--elev);
+      outline: none;
+    }
+
+    .hero {
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: var(--surface);
+      border-radius: 16px;
+      box-shadow: var(--elev);
+      overflow: hidden;
+    }
+
+    .item {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    .item-top {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .item h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .project-link {
+      flex-shrink: 0;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .project-link:hover,
+    .project-link:focus-visible {
+      background: color-mix(in oklab, var(--accent) 12%, transparent);
+      outline: none;
+    }
+
+    .item p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 920px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: color-mix(in oklab, var(--line) 55%, transparent);
+    }
+
+    .empty {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--muted);
+      box-shadow: var(--elev);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <h1 class="brand">Signor Vale</h1>
+      <nav class="nav" aria-label="Primary">
+        <a href="/" target="_self">Home</a>
+        <a href="/services/" target="_self">Services</a>
+        <a href="/case-studies/" target="_self">Case Studies</a>
+        <a href="/blog/" target="_self">Blog</a>
+        <a href="/news/" target="_self">News</a>
+        <a href="/about/" target="_self">About</a>
+        <a href="/contact/" target="_self">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Apple-Style UX Preview</h1>
+      <p>Content-first, low-noise layout using system typography, semantic colors, and predictable navigation.</p>
+      <div id="ship-status" class="status">Loading portfolio status...</div>
+    </section>
+
+    <main id="portfolio-root"></main>
+  </div>
+
+  <script>
+    const portfolioRoot = document.getElementById("portfolio-root");
+    const shipStatus = document.getElementById("ship-status");
+    const ANALYTICS_ENDPOINT = "/api/track";
+    const ANON_ID_KEY = "sv_anon_id";
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function normalizeUrl(rawUrl) {
+      const value = String(rawUrl || "#").trim();
+      if (value === "#") return "#";
+      if (value.startsWith("/") || value.startsWith("https://") || value.startsWith("http://") || value.startsWith("mailto:")) {
+        return value;
+      }
+      return "#";
+    }
+
+    function isExternalUrl(url) {
+      return url.startsWith("https://") || url.startsWith("http://") || url.startsWith("mailto:");
+    }
+
+    function getAnonId() {
+      let existing = localStorage.getItem(ANON_ID_KEY);
+      if (existing) return existing;
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        existing = window.crypto.randomUUID();
+      } else {
+        existing = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      }
+      localStorage.setItem(ANON_ID_KEY, existing);
+      return existing;
+    }
+
+    function getTrackingContext() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        anonId: getAnonId(),
+        path: window.location.pathname,
+        referrer: document.referrer || "",
+        utmSource: params.get("utm_source") || "",
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || ""
+      };
+    }
+
+    function trackEvent(eventType, payload = {}) {
+      const body = JSON.stringify({
+        eventType,
+        ...getTrackingContext(),
+        ...payload
+      });
+
+      if (navigator.sendBeacon) {
+        const blob = new Blob([body], { type: "application/json" });
+        navigator.sendBeacon(ANALYTICS_ENDPOINT, blob);
+        return;
+      }
+
+      fetch(ANALYTICS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        keepalive: true
+      }).catch(() => {});
+    }
+
+    function eventTypeFromCta(cta) {
+      const value = String(cta || "").toLowerCase();
+      return ["play", "simulate", "trade"].some((keyword) => value.includes(keyword)) ? "play_start" : "product_click";
+    }
+
+    function attachTracking() {
+      portfolioRoot.querySelectorAll(".project-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const eventType = eventTypeFromCta(link.dataset.cta);
+          trackEvent(eventType, {
+            product: link.dataset.product || "",
+            category: link.dataset.category || "",
+            cta: link.dataset.cta || "",
+            targetUrl: link.getAttribute("href") || ""
+          });
+        });
+      });
+    }
+
+    function renderPortfolio(data) {
+      const categories = Array.isArray(data?.categories) ? data.categories : [];
+      let totalProducts = 0;
+
+      const sectionsHtml = categories.map((category) => {
+        const products = Array.isArray(category?.products) ? category.products : [];
+        totalProducts += products.length;
+
+        const listHtml = products.map((product) => {
+          const safeTags = Array.isArray(product?.tags) ? product.tags : [];
+          const url = normalizeUrl(product?.url);
+          const cta = product?.cta || "Open";
+          const productName = product?.name || "Untitled Product";
+          const target = isExternalUrl(url) ? "_blank" : "_self";
+          const rel = isExternalUrl(url) ? "noopener noreferrer" : "";
+
+          return `
+            <li class="item">
+              <div class="item-top">
+                <h3>${escapeHtml(productName)}</h3>
+                <a
+                  href="${escapeHtml(url)}"
+                  class="project-link"
+                  target="${escapeHtml(target)}"
+                  rel="${escapeHtml(rel)}"
+                  data-product="${escapeHtml(productName)}"
+                  data-category="${escapeHtml(category?.title || "Uncategorized")}"
+                  data-cta="${escapeHtml(cta)}"
+                >${escapeHtml(cta)}</a>
+              </div>
+              <p>${escapeHtml(product?.description || "")}</p>
+              <div class="tags">
+                ${safeTags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+              </div>
+            </li>
+          `;
+        }).join("");
+
+        return `
+          <section class="section">
+            <div class="section-head">
+              <h2>${escapeHtml(category?.title || "Uncategorized")}</h2>
+              <span class="count">${products.length} projects</span>
+            </div>
+            <ul class="list">${listHtml}</ul>
+          </section>
+        `;
+      }).join("");
+
+      portfolioRoot.innerHTML = sectionsHtml || `<div class="empty">No products found in products.json.</div>`;
+
+      const deploymentLabel = data?.lastDeployment || "Just now";
+      shipStatus.textContent = `${totalProducts} active products · last deployment ${deploymentLabel}`;
+
+      attachTracking();
+    }
+
+    async function loadPortfolio() {
+      try {
+        const response = await fetch("/products.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        renderPortfolio(data);
+        trackEvent("page_view", { sectionCount: Array.isArray(data?.categories) ? data.categories.length : 0 });
+      } catch (error) {
+        portfolioRoot.innerHTML = `<div class="empty">Could not load products.json.</div>`;
+        shipStatus.textContent = "Preview data unavailable";
+        console.error("Preview load failed:", error);
+      }
+    }
+
+    loadPortfolio();
+  </script>
+</body>
+</html>
