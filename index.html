@@ -61,7 +61,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -70,80 +70,136 @@
         }
 
         :root {
-            --bg: #ecf0f3;
-            --panel: #ecf0f3;
-            --text: #1f2b3d;
-            --text-secondary: #6e7b90;
-            --accent: #4f6486;
-            --sync: #19a8b9;
-            --sync-soft: rgba(25, 168, 185, 0.12);
-            --neu-shadow-out: 18px 18px 30px #d1d9e6, -18px -18px 30px #ffffff;
-            --neu-shadow-soft: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
-            --neu-shadow-inset: inset 18px 18px 30px #d1d9e6, inset -18px -18px 30px #ffffff;
-            --neu-shadow-inset-soft: inset 8px 8px 16px #d7dfe9, inset -8px -8px 16px #ffffff;
+            --bg: #f5f5f7;
+            --surface: rgba(255, 255, 255, 0.72);
+            --surface-strong: rgba(255, 255, 255, 0.88);
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --line: rgba(17, 17, 17, 0.08);
+            --line-soft: rgba(17, 17, 17, 0.04);
+            --live: #34c759;
+            --beta: #ffd60a;
+            --hover-ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-shadow: 0 10px 32px rgba(15, 15, 15, 0.08);
+            --card-shadow: 0 10px 28px rgba(15, 15, 15, 0.06);
+            --card-shadow-hover: 0 22px 48px rgba(15, 15, 15, 0.14);
         }
 
         body {
-            font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.55;
+            letter-spacing: -0.02em;
             -webkit-font-smoothing: antialiased;
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0)),
+                radial-gradient(circle at 88% 8%, rgba(225, 225, 228, 0.48), rgba(225, 225, 228, 0)),
+                linear-gradient(180deg, #fafafc 0%, #f3f3f6 100%);
+        }
+
+        .bg-parallax {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .parallax-orb {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(0);
+            opacity: 0.55;
+        }
+
+        .orb-one {
+            width: 460px;
+            height: 460px;
+            top: -140px;
+            right: -120px;
+            background: radial-gradient(circle at 34% 32%, rgba(255, 255, 255, 0.95), rgba(225, 225, 225, 0.35) 58%, rgba(225, 225, 225, 0));
+        }
+
+        .orb-two {
+            width: 420px;
+            height: 420px;
+            bottom: -180px;
+            left: -150px;
+            background: radial-gradient(circle at 58% 42%, rgba(255, 255, 255, 0.8), rgba(220, 220, 220, 0.3) 62%, rgba(220, 220, 220, 0));
+        }
+
+        .orb-three {
+            width: 240px;
+            height: 240px;
+            top: 42%;
+            left: 34%;
+            background: radial-gradient(circle at 52% 48%, rgba(255, 255, 255, 0.75), rgba(230, 230, 230, 0.22) 70%, rgba(230, 230, 230, 0));
         }
 
         .container {
-            max-width: 1120px;
+            position: relative;
+            z-index: 1;
+            max-width: 1248px;
             margin: 0 auto;
-            padding: 32px 20px 72px;
+            padding: 24px 24px 80px;
         }
 
         header {
-            margin-bottom: 48px;
-            border-radius: 30px;
-            padding: 26px 26px 30px;
-            background: var(--panel);
-            box-shadow: var(--neu-shadow-out);
+            padding: 8rem 0 6.5rem;
+            border-bottom: 1px solid var(--line);
         }
 
         .site-nav {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 24px;
+            margin-bottom: 40px;
+            width: fit-content;
+            position: sticky;
+            top: 18px;
+            z-index: 10;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: var(--glass-shadow);
         }
 
         .site-nav-link {
             color: var(--text-secondary);
             text-decoration: none;
             border-radius: 999px;
-            padding: 8px 14px;
+            padding: 9px 14px;
             font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
+            font-weight: 500;
+            letter-spacing: 0.03em;
             text-transform: uppercase;
-            transition: all 0.24s ease;
-            background: var(--panel);
-            box-shadow: var(--neu-shadow-soft);
+            transition: color 0.34s var(--hover-ease), background-color 0.34s var(--hover-ease), transform 0.34s var(--hover-ease), box-shadow 0.34s var(--hover-ease);
+            background: transparent;
         }
 
         .site-nav-link:hover {
             color: var(--text);
-            box-shadow: var(--neu-shadow-inset-soft);
+            background: rgba(255, 255, 255, 0.72);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
         }
 
         .brand-lockup {
             display: flex;
             align-items: baseline;
-            gap: 12px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 18px;
         }
 
         .brand-name {
-            font-family: "Sora", "Manrope", sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.11em;
             text-transform: uppercase;
         }
 
@@ -155,167 +211,164 @@
         .brand-tag {
             font-size: 13px;
             color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 0.02em;
+            font-weight: 400;
+            letter-spacing: -0.01em;
         }
 
         h1 {
-            font-family: "Sora", "Manrope", sans-serif;
-            font-size: clamp(32px, 5.2vw, 56px);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            line-height: 1.08;
-            margin: 8px 0 14px;
-            max-width: 760px;
+            font-size: clamp(40px, 6vw, 84px);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.02;
+            margin: 10px 0 20px;
+            max-width: 900px;
         }
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: clamp(15px, 2.4vw, 18px);
-            max-width: 640px;
-            line-height: 1.55;
+            font-size: clamp(17px, 2.7vw, 22px);
+            max-width: 760px;
+            line-height: 1.5;
+            font-weight: 400;
         }
 
         .ship-status {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 22px;
-            color: var(--accent);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            gap: 10px;
+            margin-top: 30px;
+            color: #2d2d30;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(17, 17, 17, 0.08);
         }
 
         .live-dot {
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 0 0 rgba(79, 100, 134, 0.35);
-            animation: pulse 2s infinite;
+            background: var(--live);
+            box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.45);
+            animation: pulse 2.2s infinite;
         }
 
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(79, 100, 134, 0.35);
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.45);
                 opacity: 1;
             }
             70% {
-                box-shadow: 0 0 0 8px rgba(79, 100, 134, 0);
+                box-shadow: 0 0 0 10px rgba(52, 199, 89, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(79, 100, 134, 0);
-                opacity: 0.85;
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+                opacity: 0.9;
             }
         }
 
         .section {
-            margin-bottom: 34px;
-            animation: rise 320ms ease both;
-        }
-
-        @keyframes rise {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding-block: 8rem;
+            border-bottom: 1px solid var(--line-soft);
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-            padding: 0 6px;
+            gap: 16px;
+            margin-bottom: 22px;
         }
 
         .section-title {
-            font-family: "Sora", "Manrope", sans-serif;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.11em;
-            color: #51617d;
+            letter-spacing: 0.12em;
+            color: #2d2d30;
         }
 
         .section-count {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: #0f6774;
-            padding: 2px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: #434347;
+            padding: 4px 11px;
             border-radius: 999px;
-            background: var(--sync-soft);
-            box-shadow: var(--neu-shadow-soft);
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.65);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 24px;
         }
 
         .tool-card {
-            background: var(--panel);
-            border-radius: 16px;
-            padding: 14px 16px;
-            transition: all 0.22s ease;
-            box-shadow: var(--neu-shadow-soft);
+            grid-column: span 12;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            border-radius: 24px;
+            padding: 24px;
+            transition: transform 0.4s var(--hover-ease), box-shadow 0.4s var(--hover-ease), background-color 0.4s var(--hover-ease), border-color 0.4s var(--hover-ease);
+            box-shadow: var(--card-shadow);
+            -webkit-backdrop-filter: blur(8px) saturate(145%);
+            backdrop-filter: blur(8px) saturate(145%);
         }
 
         .tool-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 12px 12px 24px #cfd7e3, -12px -12px 24px #ffffff;
+            transform: translateY(-6px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.82);
         }
 
         .tool-header {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .tool-name {
-            font-family: "Sora", "Manrope", sans-serif;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 600;
-            letter-spacing: -0.015em;
-            line-height: 1.25;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         .tool-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
+            font-weight: 500;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
             border-radius: 999px;
-            padding: 6px 10px;
+            padding: 8px 12px;
             white-space: nowrap;
-            transition: all 0.2s ease;
-            background: var(--panel);
-            box-shadow: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
+            transition: color 0.34s var(--hover-ease), transform 0.34s var(--hover-ease), background-color 0.34s var(--hover-ease), box-shadow 0.34s var(--hover-ease);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--line);
         }
 
         .tool-link:hover {
             color: var(--text);
-            box-shadow: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
         }
 
         .tool-desc {
             color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.45;
-            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 16px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             line-clamp: 2;
@@ -326,28 +379,41 @@
         .tool-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
+            font-weight: 500;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: #7a879e;
+            color: #4b4b50;
         }
 
         .tag {
             border-radius: 999px;
-            padding: 4px 8px;
-            background: var(--panel);
-            box-shadow: 4px 4px 8px #d5dde8, -4px -4px 8px #ffffff;
-            color: #0f6774;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--line);
+            color: #3e3e42;
+        }
+
+        .tag-live {
+            color: #0b8d2c;
+            border-color: color-mix(in srgb, var(--live) 35%, #ffffff);
+            background: color-mix(in srgb, var(--live) 16%, #ffffff);
+        }
+
+        .tag-beta {
+            color: #8a6200;
+            border-color: color-mix(in srgb, var(--beta) 45%, #ffffff);
+            background: color-mix(in srgb, var(--beta) 18%, #ffffff);
         }
 
         footer {
-            margin-top: 70px;
-            padding: 18px 20px;
-            border-radius: 20px;
-            background: var(--panel);
-            box-shadow: var(--neu-shadow-soft);
+            margin-top: 8rem;
+            padding: 22px 24px;
+            border-radius: 24px;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.76);
+            box-shadow: var(--card-shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -364,55 +430,101 @@
         .socials a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 13px;
-            transition: color 0.2s ease;
+            transition: color 0.3s var(--hover-ease), transform 0.3s var(--hover-ease);
         }
 
         .socials a:hover {
             color: var(--text);
+            transform: translateY(-1px);
         }
 
         .status {
             font-size: 12px;
-            color: #8895aa;
-            font-family: "SF Mono", "Menlo", "Monaco", monospace;
+            color: #6e6e73;
+            font-family: "SF Mono", "Menlo", "Monaco", "Roboto Mono", monospace;
             letter-spacing: 0.02em;
         }
 
         .empty-state {
-            border-radius: 18px;
-            padding: 18px;
+            border-radius: 22px;
+            padding: 20px;
             color: var(--text-secondary);
-            font-size: 14px;
-            background: var(--panel);
-            box-shadow: var(--neu-shadow-inset-soft);
+            font-size: 15px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: var(--card-shadow);
+        }
+
+        @media (min-width: 860px) {
+            .tool-card {
+                grid-column: span 6;
+            }
+
+            .tool-card:nth-child(4n + 1) {
+                grid-column: span 7;
+            }
+
+            .tool-card:nth-child(4n + 2) {
+                grid-column: span 5;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .tool-card {
+                grid-column: span 4;
+            }
+
+            .tool-card:nth-child(4n + 1) {
+                grid-column: span 7;
+            }
+
+            .tool-card:nth-child(4n + 2) {
+                grid-column: span 5;
+            }
         }
 
         @media (max-width: 700px) {
             .container {
-                padding: 18px 14px 52px;
+                padding: 18px 14px 56px;
             }
 
             header {
-                padding: 18px 16px 22px;
-                border-radius: 22px;
-                margin-bottom: 34px;
+                padding: 5rem 0 3.5rem;
             }
 
             .site-nav {
                 gap: 6px;
-                margin-bottom: 18px;
+                margin-bottom: 24px;
+                top: 12px;
+                padding: 8px;
             }
 
             .site-nav-link {
                 font-size: 10px;
-                padding: 7px 10px;
+                padding: 7px 9px;
             }
 
             .brand-lockup {
                 flex-wrap: wrap;
                 gap: 8px;
+            }
+
+            h1 {
+                font-size: clamp(34px, 12vw, 52px);
+            }
+
+            .subtitle {
+                font-size: 17px;
+            }
+
+            .ship-status {
+                font-size: 12px;
+            }
+
+            .section {
+                padding-block: 5rem;
             }
 
             .tool-header {
@@ -425,21 +537,30 @@
             }
 
             .tool-name {
-                font-size: 16px;
+                font-size: 20px;
             }
 
             .tool-desc {
-                font-size: 13px;
+                font-size: 14px;
             }
 
             footer {
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .parallax-orb {
+                opacity: 0.35;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-parallax" aria-hidden="true">
+        <span class="parallax-orb orb-one" data-depth="0.12"></span>
+        <span class="parallax-orb orb-two" data-depth="0.18"></span>
+        <span class="parallax-orb orb-three" data-depth="0.08"></span>
+    </div>
     <div class="container">
         <header>
             <nav class="site-nav" aria-label="Primary">
@@ -491,6 +612,8 @@
         </footer>
     </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script>
         const portfolioRoot = document.getElementById("portfolio-sections");
         const shipStatusText = document.querySelector(".ship-status span:last-child");
@@ -574,6 +697,71 @@
             return playKeywords.some((keyword) => value.includes(keyword)) ? "play_start" : "product_click";
         }
 
+        function getTagClass(tag) {
+            const value = String(tag || "").toLowerCase();
+            if (value.includes("live")) return "tag-live";
+            if (value.includes("beta")) return "tag-beta";
+            return "";
+        }
+
+        function initMotions() {
+            if (!window.gsap || !window.ScrollTrigger) return;
+
+            gsap.registerPlugin(ScrollTrigger);
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+            gsap.utils.toArray(".section").forEach((section) => {
+                gsap.fromTo(
+                    section,
+                    { autoAlpha: 0, y: 42 },
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        duration: 0.9,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 82%"
+                        }
+                    }
+                );
+            });
+
+            gsap.utils.toArray(".tool-card").forEach((card, index) => {
+                gsap.fromTo(
+                    card,
+                    { autoAlpha: 0, y: 32 },
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        duration: 0.78,
+                        ease: "power3.out",
+                        delay: Math.min(index * 0.04, 0.26),
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 88%"
+                        }
+                    }
+                );
+            });
+
+            gsap.utils.toArray(".parallax-orb").forEach((orb) => {
+                const depth = Number(orb.dataset.depth || 0.1);
+                gsap.to(orb, {
+                    yPercent: depth * 120,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: document.body,
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1.1
+                    }
+                });
+            });
+
+            ScrollTrigger.refresh();
+        }
+
         function attachCardTracking() {
             portfolioRoot.querySelectorAll(".tool-link").forEach((link) => {
                 link.addEventListener("click", () => {
@@ -620,7 +808,7 @@
                             </div>
                             <p class="tool-desc">${escapeHtml(product?.description || "")}</p>
                             <div class="tool-meta">
-                                ${safeTags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+                                ${safeTags.map((tag) => `<span class="tag ${getTagClass(tag)}">${escapeHtml(tag)}</span>`).join("")}
                             </div>
                         </article>
                     `;
@@ -649,6 +837,7 @@
             }
 
             attachCardTracking();
+            initMotions();
         }
 
         async function loadPortfolio() {
