@@ -141,13 +141,14 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 1248px;
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 24px 24px 80px;
+            padding: 0 20px;
         }
 
         header {
-            padding: 8rem 0 6.5rem;
+            padding: 80px 0;
             border-bottom: 1px solid var(--line);
         }
 
@@ -221,15 +222,23 @@
             letter-spacing: -0.025em;
             line-height: 1.02;
             margin: 10px 0 20px;
-            max-width: 900px;
+            width: 100%;
+            max-width: 100%;
         }
 
         .subtitle {
             color: var(--text-secondary);
             font-size: clamp(17px, 2.7vw, 22px);
-            max-width: 760px;
+            width: 100%;
+            max-width: 100%;
             line-height: 1.5;
             font-weight: 400;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .ship-status {
@@ -271,7 +280,7 @@
         }
 
         .section {
-            padding-block: 8rem;
+            padding: 80px 0;
             border-bottom: 1px solid var(--line-soft);
         }
 
@@ -302,14 +311,15 @@
             background: rgba(255, 255, 255, 0.65);
         }
 
+        .cards-grid,
         .grid {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
+            margin-top: 40px;
         }
 
         .tool-card {
-            grid-column: span 12;
             background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.78);
             border-radius: 24px;
@@ -408,7 +418,7 @@
         }
 
         footer {
-            margin-top: 8rem;
+            margin-top: 24px;
             padding: 22px 24px;
             border-radius: 24px;
             background: var(--surface);
@@ -457,41 +467,13 @@
             box-shadow: var(--card-shadow);
         }
 
-        @media (min-width: 860px) {
-            .tool-card {
-                grid-column: span 6;
-            }
-
-            .tool-card:nth-child(4n + 1) {
-                grid-column: span 7;
-            }
-
-            .tool-card:nth-child(4n + 2) {
-                grid-column: span 5;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            .tool-card {
-                grid-column: span 4;
-            }
-
-            .tool-card:nth-child(4n + 1) {
-                grid-column: span 7;
-            }
-
-            .tool-card:nth-child(4n + 2) {
-                grid-column: span 5;
-            }
-        }
-
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 18px 14px 56px;
+                padding: 0 20px;
             }
 
             header {
-                padding: 5rem 0 3.5rem;
+                padding: 50px 0;
             }
 
             .site-nav {
@@ -524,7 +506,7 @@
             }
 
             .section {
-                padding-block: 5rem;
+                padding: 50px 0;
             }
 
             .tool-header {
@@ -552,6 +534,11 @@
             .parallax-orb {
                 opacity: 0.35;
             }
+
+            .hero {
+                text-align: center;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -562,7 +549,7 @@
         <span class="parallax-orb orb-three" data-depth="0.08"></span>
     </div>
     <div class="container">
-        <header>
+        <header class="hero">
             <nav class="site-nav" aria-label="Primary">
                 <a href="/services/" target="_self" class="site-nav-link">Services</a>
                 <a href="/case-studies/" target="_self" class="site-nav-link">Case Studies</a>

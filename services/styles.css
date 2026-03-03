@@ -40,9 +40,10 @@ a {
 }
 
 .container {
-  width: min(1248px, 100%);
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 24px 80px;
+  padding: 0 20px;
 }
 
 .nav {
@@ -96,9 +97,12 @@ a {
 }
 
 .hero {
-  padding: 7rem 0 4.5rem;
+  padding: 80px 0;
   margin-bottom: 0;
   border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .eyebrow {
@@ -123,16 +127,22 @@ h1 {
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.025em;
-  max-width: 900px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .lead {
   margin: 0;
   color: var(--text-secondary);
-  max-width: 760px;
+  width: 100%;
+  max-width: 100%;
   font-size: clamp(17px, 2.7vw, 22px);
   line-height: 1.5;
   font-weight: 400;
+}
+
+.section {
+  padding: 80px 0;
 }
 
 .cta-row {
@@ -170,17 +180,17 @@ h1 {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
 }
 
+.cards-grid,
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  margin: 8rem 0 0;
-  padding-bottom: 8rem;
-  border-bottom: 1px solid var(--line-soft);
+  margin-top: 40px;
+  margin-bottom: 24px;
+  padding-bottom: 0;
 }
 
 .card {
-  grid-column: span 12;
   border-radius: 24px;
   padding: 24px;
   background: var(--surface);
@@ -241,9 +251,9 @@ ul {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 24px;
-  margin: 5rem 0 0;
-  padding-bottom: 6rem;
-  border-bottom: 1px solid var(--line-soft);
+  margin-top: 40px;
+  margin-bottom: 24px;
+  padding-bottom: 0;
 }
 
 .kpi .card {
@@ -273,7 +283,7 @@ ul {
 }
 
 .faq {
-  margin-top: 8rem;
+  margin-top: 24px;
 }
 
 .faq details {
@@ -320,7 +330,7 @@ ul {
 }
 
 footer {
-  margin-top: 8rem;
+  margin-top: 24px;
   padding: 22px 24px;
   border-radius: 24px;
   background: var(--surface);
@@ -340,29 +350,15 @@ footer a:hover {
   color: #0f6728;
 }
 
-@media (min-width: 860px) {
-  .card {
-    grid-column: span 6;
-  }
-
-  .card:nth-child(4n + 1) {
-    grid-column: span 7;
-  }
-
-  .card:nth-child(4n + 2) {
-    grid-column: span 5;
-  }
-}
-
 @media (max-width: 860px) {
   .kpi .card {
     grid-column: span 12;
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .container {
-    padding: 18px 14px 56px;
+    padding: 0 20px;
   }
 
   .nav {
@@ -380,7 +376,9 @@ footer a:hover {
   }
 
   .hero {
-    padding: 5rem 0 3.5rem;
+    padding: 50px 0;
+    text-align: center;
+    align-items: center;
   }
 
   h1 {
@@ -391,14 +389,13 @@ footer a:hover {
     font-size: 17px;
   }
 
-  .grid {
-    margin-top: 5rem;
-    padding-bottom: 5rem;
+  .section {
+    padding: 50px 0;
   }
 
   .kpi {
-    margin-top: 3rem;
-    padding-bottom: 4rem;
+    margin-top: 40px;
+    margin-bottom: 24px;
   }
 
   .card h2 {
@@ -411,10 +408,6 @@ footer a:hover {
   }
 
   .faq {
-    margin-top: 5rem;
-  }
-
-  footer {
-    margin-top: 5rem;
+    margin-top: 24px;
   }
 }
